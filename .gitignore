@@ -1,0 +1,16 @@
+.vs/
+.idea/
+
+bin/
+obj/
+
+Debug/
+Release/
+
+*.user
+*.suo
+*.db
+*.db-shm
+*.db-wal
+
+Projeto.DW/appsettings.json
