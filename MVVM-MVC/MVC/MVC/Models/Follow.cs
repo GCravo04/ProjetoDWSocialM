@@ -1,14 +1,22 @@
-﻿namespace MVC.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class Follow
 {
-    public string FollowerId { get; set; }
+    [Key]
+    public int FollowId { get; set; }
 
-    public string FollowingId { get; set; }
+    [ForeignKey(nameof(FollowerUser))]
+    public string? FollowerUserId { get; set; }
+
+    [ForeignKey(nameof(FollowedUser))]
+    public string FollowedUserId { get; set; } = string.Empty;
 
     public DateTime CreatedAt { get; set; }
 
-    public AppUser Follower { get; set; }
+    [InverseProperty(nameof(AppUser.Following))]
+    public AppUser? FollowerUser { get; set; }
 
-    public AppUser Following { get; set; }
+    [InverseProperty(nameof(AppUser.Followers))]
+    public AppUser FollowedUser { get; set; } = null!;
 }
