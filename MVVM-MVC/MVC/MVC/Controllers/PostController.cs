@@ -12,7 +12,7 @@ namespace MVC.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-       /* private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public PostController(ApplicationDbContext context)
         {
@@ -21,14 +21,14 @@ namespace MVC.Controllers
 
         // GET: api/Post
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PostController>>> GetPosts()
+        public async Task<ActionResult<IEnumerable<Post>>> GetPosts()
         {
             return await _context.Posts.ToListAsync();
         }
 
         // GET: api/Post/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<PostController>> GetPost(int id)
+        public async Task<ActionResult<Post>> GetPost(int id)
         {
             var post = await _context.Posts.FindAsync(id);
 
@@ -43,14 +43,14 @@ namespace MVC.Controllers
         // PUT: api/Post/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPost(int id, PostController postController)
+        public async Task<IActionResult> PutPost(int id, Post post)
         {
-            if (id != postController.PostId)
+            if (id != post.PostId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(postController).State = EntityState.Modified;
+            _context.Entry(post).State = EntityState.Modified;
 
             try
             {
@@ -74,12 +74,12 @@ namespace MVC.Controllers
         // POST: api/Post
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<PostController>> PostPost(PostController postController)
+        public async Task<ActionResult<Post>> PostPost(Post post)
         {
-            _context.Posts.Add(postController);
+            _context.Posts.Add(post);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPost", new { id = postController.PostId }, postController);
+            return CreatedAtAction("GetPost", new { id = post.PostId }, post);
         }
 
         // DELETE: api/Post/5
@@ -101,6 +101,6 @@ namespace MVC.Controllers
         private bool PostExists(int id)
         {
             return _context.Posts.Any(e => e.PostId == id);
-        }*/
+        }
     } 
 }
