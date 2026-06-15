@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MVC.Models.DTOs;
 
 namespace MVC.Controllers
 {
@@ -43,30 +44,17 @@ namespace MVC.Controllers
         // PUT: api/Follow/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFollow(int id, Follow follow)
+        public async Task<IActionResult> PutFollow(int id, FollowDTO dto)
         {
-            if (id != follow.FollowId)
-            {
-                return BadRequest();
-            }
+            var follow = await _context.Follows.FindAsync(id);
 
-            _context.Entry(follow).State = EntityState.Modified;
+            if (follow == null)
+                return NotFound();
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!FollowExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            follow.FollowerUserId = dto.FollowerUserId;
+            follow.FollowedUserId = dto.FollowedUserId;
+
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -74,12 +62,21 @@ namespace MVC.Controllers
         // POST: api/Follow
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Follow>> PostFollow(Follow follow)
+        public async Task<ActionResult<Follow>> PostFollow(FollowDTO dto)
         {
+            var follow = new Follow
+            {
+                FollowerUserId = dto.FollowerUserId,
+                FollowedUserId = dto.FollowedUserId,
+                CreatedAt = DateTime.UtcNow
+            };
+
             _context.Follows.Add(follow);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetFollow", new { id = follow.FollowId }, follow);
+            return CreatedAtAction(nameof(GetFollow),
+                new { id = follow.FollowId },
+                follow);
         }
 
         // DELETE: api/Follow/5

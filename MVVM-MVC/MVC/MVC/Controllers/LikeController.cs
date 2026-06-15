@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MVC.Models.DTOs;
 
 namespace MVC
 {
@@ -39,61 +40,24 @@ namespace MVC
 
             return like;
         }
-
-        // PUT: api/Like/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutLike(string id, Like like)
-        {
-            if (id != like.UserId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(like).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LikeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
+        
 
         // POST: api/Like
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754[HttpPost]
         [HttpPost]
-        public async Task<ActionResult<Like>> PostLike(Like like)
+        public async Task<ActionResult<Like>> PostLike(LikeDTO dto)
         {
-            _context.Likes.Add(like);
-            try
+            var like = new Like
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (LikeExists(like.UserId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+                UserId = dto.UserId,
+                PostId = dto.PostId,
+                CreatedAt = DateTime.UtcNow
+            };
 
-            return CreatedAtAction("GetLike", new { id = like.UserId }, like);
+            _context.Likes.Add(like);
+            await _context.SaveChangesAsync();
+
+            return Ok(like);
         }
 
         // DELETE: api/Like/5

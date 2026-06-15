@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MVC.Models.DTOs;
 
 namespace MVC.Controllers
 {
@@ -43,30 +44,17 @@ namespace MVC.Controllers
         // PUT: api/Post/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPost(int id, Post post)
+        public async Task<IActionResult> PutPost(int id, PostDto dto)
         {
-            if (id != post.PostId)
-            {
-                return BadRequest();
-            }
+            var post = await _context.Posts.FindAsync(id);
 
-            _context.Entry(post).State = EntityState.Modified;
+            if (post == null)
+                return NotFound();
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PostExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            post.Content = dto.Content;
+            post.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -74,12 +62,21 @@ namespace MVC.Controllers
         // POST: api/Post
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Post>> PostPost(Post post)
+        public async Task<ActionResult<Post>> PostPost(PostDto dto)
         {
+            var post = new Post
+            {
+                UserId = dto.UserId,
+                Content = dto.Content,
+                CreatedAt = DateTime.UtcNow
+            };
+
             _context.Posts.Add(post);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPost", new { id = post.PostId }, post);
+            return CreatedAtAction(nameof(GetPost),
+                new { id = post.PostId },
+                post);
         }
 
         // DELETE: api/Post/5

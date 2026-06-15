@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVC.Models;
+using MVC.Models.DTOs;
 
 namespace MVC.Controllers
 {
@@ -44,30 +45,16 @@ namespace MVC.Controllers
         // PUT: api/Comment/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutComment(int id, Comment comment)
+        public async Task<IActionResult> PutComment(int id, CommentDTO dto)
         {
-            if (id != comment.CommentId)
-            {
-                return BadRequest();
-            }
+            var comment = await _context.Comments.FindAsync(id);
 
-            _context.Entry(comment).State = EntityState.Modified;
+            if (comment == null)
+                return NotFound();
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CommentExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            comment.Content = dto.Content;
+
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -75,12 +62,20 @@ namespace MVC.Controllers
         // POST: api/Comment
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Comment>> PostComment(Comment comment)
+        public async Task<ActionResult<Comment>> PostComment(CommentDTO dto)
         {
+            var comment = new Comment
+            {
+                UserId = dto.UserId,
+                PostId = dto.PostId,
+                Content = dto.Content,
+                CreatedAt = DateTime.UtcNow
+            };
+
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetComment", new { id = comment.CommentId }, comment);
+            return Ok(comment);
         }
 
         // DELETE: api/Comment/5
