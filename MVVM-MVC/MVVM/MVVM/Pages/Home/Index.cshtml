@@ -1,6 +1,57 @@
 ﻿@page
+
 @model MVVM.Pages.Home.IndexModel
 
-@{
-    ViewData["Title"] = "Index";
+<h2>What's happening?</h2>
+
+<form method="post">
+
+    <div class="mb-3">
+
+        <textarea asp-for="NewPost.Content"
+                  class="form-control">
+        </textarea>
+
+    </div>
+
+    <button type="submit"
+            class="btn btn-primary">
+        Post
+    </button>
+
+</form>
+
+<hr />
+
+@foreach(var post in Model.Posts)
+{
+    <div class="card mb-3">
+
+        <div class="card-body">
+
+            <h6>@post.User.UserName</h6>
+
+            <p>@post.Content</p>
+
+            <small>
+                @post.CreatedAt
+            </small>
+
+            <br />
+
+            <a asp-page="./Edit"
+               asp-route-id="@post.PostId"
+               class="btn btn-warning btn-sm">
+                Edit
+            </a>
+
+            <a asp-page="./Delete"
+               asp-route-id="@post.PostId"
+               class="btn btn-danger btn-sm">
+                Delete
+            </a>
+
+        </div>
+
+    </div>
 }
