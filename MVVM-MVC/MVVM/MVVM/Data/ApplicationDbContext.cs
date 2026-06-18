@@ -9,13 +9,13 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     {
     }
 
-    public DbSet<Post> Posts { get; set; }
+    public DbSet<MVC.Models.Post> Posts { get; set; }
 
-    public DbSet<Comment> Comments { get; set; }
+    public DbSet<MVC.Models.Comment> Comments { get; set; }
 
-    public DbSet<Like> Likes { get; set; }
+    public DbSet<MVC.Models.Like> Likes { get; set; }
 
-    public DbSet<Follow> Follows { get; set; }
+    public DbSet<MVC.Models.Follow> Follows { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

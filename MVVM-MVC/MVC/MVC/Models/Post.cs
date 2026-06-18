@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using MVC.Models;
 
+
+namespace MVC.Models;
 public class Post
 {
-    [Key]
-    public int PostId { get; set; }
+    [Key] public int PostId { get; set; }
 
     public string UserId { get; set; } = string.Empty;
 

@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using MVC.Models;
 
+namespace MVC.Models;
 public class AppUser : IdentityUser
 {
     public string? ProfileImageUrl { get; set; }

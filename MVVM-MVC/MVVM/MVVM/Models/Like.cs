@@ -1,4 +1,5 @@
-﻿public class Like
+﻿namespace MVC.Models;
+public class Like
 {
     public string UserId { get; set; } = string.Empty;
 
