@@ -1,0 +1,226 @@
+
+
+body {
+    background: #f5f5f5;
+    font-family: "Segoe UI", sans-serif;
+}
+
+.layout {
+    max-width: 1400px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 260px 1fr 320px;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    background: white;
+    border-right: 1px solid #e5e5e5;
+    padding: 30px 20px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.logo {
+    font-size: 42px;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+
+.menu {
+    list-style: none;
+    padding: 0;
+}
+
+.menu li {
+    padding: 14px 18px;
+    border-radius: 14px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: .2s;
+}
+
+.menu li:hover {
+    background: #f1f1f1;
+}
+
+.menu li.active {
+    background: #f1f1f1;
+    font-weight: 600;
+}
+
+.menu i {
+    margin-right: 10px;
+}
+
+.profile-box {
+    position: absolute;
+    bottom: 30px;
+    width: 200px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #dbeafe;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+/* FEED */
+
+.feed {
+    background: white;
+    border-right: 1px solid #e5e5e5;
+    border-left: 1px solid #e5e5e5;
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.tab {
+    flex: 1;
+    text-align: center;
+    padding: 18px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.tab.active {
+    border-bottom: 3px solid black;
+}
+
+.composer {
+    padding: 20px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.composer-top {
+    display: flex;
+    gap: 15px;
+}
+
+.composer textarea {
+    border: none;
+    width: 100%;
+    resize: none;
+    outline: none;
+    font-size: 18px;
+    min-height: 80px;
+}
+
+.composer-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.composer-icons i {
+    font-size: 18px;
+    margin-right: 15px;
+    cursor: pointer;
+    color: #555;
+}
+
+.publish-btn {
+    background: black;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 30px;
+    font-weight: 600;
+}
+
+/* POSTS */
+
+.post {
+    padding: 20px;
+    border-bottom: 1px solid #ececec;
+    transition: .2s;
+}
+
+.post:hover {
+    background: #fafafa;
+}
+
+.post-header {
+    display: flex;
+    gap: 12px;
+}
+
+.post-name {
+    font-weight: 600;
+}
+
+.post-user {
+    color: gray;
+    margin-left: 5px;
+}
+
+.post-time {
+    color: gray;
+    margin-left: 5px;
+}
+
+.post-content {
+    margin-top: 10px;
+    margin-left: 62px;
+    line-height: 1.6;
+}
+
+.post-actions {
+    display: flex;
+    gap: 40px;
+    margin-top: 15px;
+    margin-left: 62px;
+    color: gray;
+}
+
+.post-actions i {
+    cursor: pointer;
+}
+
+/* RIGHT */
+
+.right {
+    padding: 20px;
+}
+
+.suggestions {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.suggestions h5 {
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.user-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.follow-btn {
+    border: none;
+    background: black;
+    color: white;
+    border-radius: 20px;
+    padding: 8px 16px;
+}
+
