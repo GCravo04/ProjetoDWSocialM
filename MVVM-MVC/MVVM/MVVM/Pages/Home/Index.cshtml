@@ -1,6 +1,48 @@
 ﻿@page
 @model MVVM.Pages.Home.IndexModel
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Feed";
 }
+
+<div class="container" style="max-width: 600px;">
+    <h1 class="h4 mb-1">Feed</h1>
+    <p class="text-muted mb-4">Publicações mais recentes</p>
+
+    @if (!Model.Posts.Any())
+    {
+        <div class="alert alert-light border text-center text-muted">
+            Ainda não há publicações.
+        </div>
+    }
+    else
+    {
+        @foreach (var post in Model.Posts)
+        {
+            var iniciais = post.AuthorName.Length >= 2
+                ? post.AuthorName.Substring(0, 2).ToUpper()
+                : post.AuthorName.ToUpper();
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-2"
+                             style="width: 40px; height: 40px; font-size: 14px; flex-shrink: 0;">
+                            @iniciais
+                        </div>
+                        <div>
+                            <div class="fw-semibold">@post.AuthorName</div>
+                            <small class="text-muted">@post.CreatedAt.ToString("dd/MM/yyyy HH:mm")</small>
+                        </div>
+                    </div>
+
+                    <p class="mb-3">@post.Content</p>
+
+                    <div class="d-flex gap-4 text-muted border-top pt-2" style="font-size: 14px;">
+                        <span>@post.CommentCount comentários</span>
+                        <span>@post.LikeCount gostos</span>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
