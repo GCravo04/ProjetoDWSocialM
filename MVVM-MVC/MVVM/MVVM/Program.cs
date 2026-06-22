@@ -3,10 +3,13 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Connection String
+var connectionString =
+    builder.Configuration.GetConnectionString("DefaultConnection");
+
 // DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(connectionString));
 
 // Identity
 builder.Services.AddDefaultIdentity<AppUser>(options =>
@@ -34,6 +37,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
+
 app.MapRazorPages()
     .WithStaticAssets();
 

@@ -4,11 +4,11 @@
         <TargetFramework>net10.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-      <UserSecretsId>01d55770-9367-485e-a121-353f324061c6</UserSecretsId>
-  </PropertyGroup>
+    </PropertyGroup>
 
 <ItemGroup>
         <None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+        <None Include="wwwroot\css\Home.css" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,48 +1,155 @@
 ﻿@page
 @model MVVM.Pages.Home.IndexModel
 @{
-    ViewData["Title"] = "Feed";
+    ViewData["Title"] = "Home";
 }
 
-<div class="container" style="max-width: 600px;">
-    <h1 class="h4 mb-1">Feed</h1>
-    <p class="text-muted mb-4">Publicações mais recentes</p>
+<link rel="stylesheet" href="~/css/home.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    @if (!Model.Posts.Any())
-    {
-        <div class="alert alert-light border text-center text-muted">
-            Ainda não há publicações.
+<div class="layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">nexo</div>
+
+        <ul class="menu">
+            <li class="active"><i class="bi bi-house"></i> Início</li>
+            <li><i class="bi bi-search"></i> Explorar</li>
+            <li><i class="bi bi-bell"></i> Notificações</li>
+            <li><i class="bi bi-envelope"></i> Mensagens</li>
+            <li><i class="bi bi-person"></i> Perfil</li>
+            <li><i class="bi bi-gear"></i> Definições</li>
+        </ul>
+
+        <div class="profile-box">
+
+            <div class="avatar">
+                @Model.CurrentUser?.UserName?.Substring(0, Math.Min(2, Model.CurrentUser.UserName.Length)).ToUpper()
+            </div>
+
+            <div>
+                <strong>@Model.CurrentUser?.UserName</strong><br />
+                <small>@("@"+Model.CurrentUser?.UserName)</small>
+            </div>
+
         </div>
-    }
-    else
-    {
+
+    </aside>
+
+    <!-- FEED -->
+
+    <main class="feed">
+
+        <div class="tabs">
+            <div class="tab active">Para si</div>
+            <div class="tab">A seguir</div>
+        </div>
+
+        <!-- NOVA PUBLICAÇÃO -->
+
+        <div class="composer">
+
+            <form method="post">
+
+                <div class="composer-top">
+
+                    <div class="avatar">
+                        @Model.CurrentUser?.UserName?.Substring(0, Math.Min(2, Model.CurrentUser.UserName.Length)).ToUpper()
+                    </div>
+
+                    <textarea asp-for="NewPost.Content"
+                              placeholder="O que se passa?"></textarea>
+
+                </div>
+
+                <div class="composer-actions">
+
+                    <div class="composer-icons">
+                        <i class="bi bi-image"></i>
+                        <i class="bi bi-emoji-smile"></i>
+                        <i class="bi bi-geo-alt"></i>
+                    </div>
+
+                    <button type="submit" class="publish-btn">
+                        Publicar
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <!-- POSTS -->
+
         @foreach (var post in Model.Posts)
         {
-            var iniciais = post.AuthorName.Length >= 2
-                ? post.AuthorName.Substring(0, 2).ToUpper()
-                : post.AuthorName.ToUpper();
+            <div class="post">
 
-            <div class="card mb-3">
-                <div class="card-body">
-                    <div class="d-flex align-items-center mb-2">
-                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-2"
-                             style="width: 40px; height: 40px; font-size: 14px; flex-shrink: 0;">
-                            @iniciais
-                        </div>
-                        <div>
-                            <div class="fw-semibold">@post.AuthorName</div>
-                            <small class="text-muted">@post.CreatedAt.ToString("dd/MM/yyyy HH:mm")</small>
-                        </div>
+                <div class="post-header">
+
+                    <div class="avatar">
+                        @post.User.UserName.Substring(0, Math.Min(2, post.User.UserName.Length)).ToUpper()
                     </div>
 
-                    <p class="mb-3">@post.Content</p>
+                    <div>
 
-                    <div class="d-flex gap-4 text-muted border-top pt-2" style="font-size: 14px;">
-                        <span>@post.CommentCount comentários</span>
-                        <span>@post.LikeCount gostos</span>
+                        <span class="post-name">
+                            @post.User.UserName
+                        </span>
+
+                        <span class="post-user">
+                            @("@"+post.User.UserName)
+                        </span>
+
+                        <span class="post-time">
+                            · @post.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+                        </span>
+
                     </div>
+
                 </div>
+
+                <div class="post-content">
+                    @post.Content
+                </div>
+
+                <div class="post-actions">
+
+                    <span>
+                        <i class="bi bi-chat"></i>
+                        @post.Comments.Count
+                    </span>
+
+                    <span>
+                        <i class="bi bi-heart"></i>
+                        @post.Likes.Count
+                    </span>
+
+                </div>
+
             </div>
         }
-    }
+
+    </main>
+
+    <!-- SUGESTÕES -->
+
+    <aside class="right">
+
+        <div class="suggestions">
+
+            <h5>Quem seguir</h5>
+
+            <p class="text-muted">
+                Funcionalidade em desenvolvimento.
+            </p>
+
+        </div>
+
+    </aside>
+
 </div>
