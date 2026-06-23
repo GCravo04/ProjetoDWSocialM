@@ -223,4 +223,20 @@ body {
     border-radius: 20px;
     padding: 8px 16px;
 }
+.create-post-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
 
+.fake-textarea {
+    width: 100%;
+    min-height: 80px;
+    color: gray;
+    font-size: 18px;
+    padding-top: 10px;
+}
+
+.create-post-link:hover .fake-textarea {
+    color: #444;
+}
