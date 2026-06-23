@@ -52,34 +52,43 @@
 
         <div class="composer">
 
-            <form method="post">
+            @if (User.Identity?.IsAuthenticated ?? false)
+            {
+                <a asp-page="/Home/Posts/Create"
+                   class="create-post-link">
 
-                <div class="composer-top">
+                    <div class="composer-top">
 
-                    <div class="avatar">
-                        @Model.CurrentUser?.UserName?.Substring(0, Math.Min(2, Model.CurrentUser.UserName.Length)).ToUpper()
+                        <div class="avatar">
+                            @Model.CurrentUser?.UserName?.Substring(0, Math.Min(2, Model.CurrentUser.UserName.Length)).ToUpper()
+                        </div>
+
+                        <div class="fake-textarea">
+                            O que se passa?
+                        </div>
+
                     </div>
 
-                    <textarea asp-for="NewPost.Content"
-                              placeholder="O que se passa?"></textarea>
+                </a>
+            }
+            else
+            {
+                <a asp-area="Identity"
+                   asp-page="/Account/Login"
+                   class="create-post-link">
 
-                </div>
+                    <div class="composer-top">
 
-                <div class="composer-actions">
+                        <div class="avatar">?</div>
 
-                    <div class="composer-icons">
-                        <i class="bi bi-image"></i>
-                        <i class="bi bi-emoji-smile"></i>
-                        <i class="bi bi-geo-alt"></i>
+                        <div class="fake-textarea">
+                            Inicia sessão para publicar...
+                        </div>
+
                     </div>
 
-                    <button type="submit" class="publish-btn">
-                        Publicar
-                    </button>
-
-                </div>
-
-            </form>
+                </a>
+            }
 
         </div>
 
