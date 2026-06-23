@@ -1,9 +1,16 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
+namespace MVVM.Pages.Home.Posts;
 
+public class DeleteModel : PageModel
+{
+    public void OnGet()
+    {
+    }
 
-namespace MVVM.Pages.Home;
-
-public class DeleteModel : PageModel;
+    public IActionResult OnPost()
+    {
+        return RedirectToPage("/Home/Index");
+    }
+}

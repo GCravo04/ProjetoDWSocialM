@@ -1,6 +1,43 @@
 ﻿@page
-@model MVVM.Pages.Home.DetailsModel
+@model MVVM.Pages.Home.Posts.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes das Publicações";
 }
+
+<link rel="stylesheet" href="~/css/home.css" />
+
+<div class="container mt-5" style="max-width:700px;">
+
+    <div class="card shadow-sm">
+
+        <div class="card-header">
+            <h3>As minhas publicações</h3>
+        </div>
+
+        <div class="card-body">
+
+            <div class="mb-3">
+
+                <textarea class="form-control"
+                          rows="6"
+                          readonly
+                          placeholder="Conteúdo da publicação">
+                </textarea>
+
+            </div>
+
+            <div class="d-flex justify-content-end">
+
+                <a asp-page="/Home/Index"
+                   class="btn btn-secondary">
+                    Voltar
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
