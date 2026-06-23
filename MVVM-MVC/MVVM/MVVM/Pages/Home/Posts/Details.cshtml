@@ -17,15 +17,30 @@
 
         <div class="card-body">
 
-            <div class="mb-3">
+            @if (!Model.Posts.Any())
+            {
+                <p class="text-muted">
+                    Ainda não tens publicações.
+                </p>
+            }
+            else
+            {
+                @foreach (var post in Model.Posts)
+                {
+                    <div class="border rounded p-3 mb-3">
+                        <div class="mb-2">
+                            <small class="text-muted">
+                                @post.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+                            </small>
+                        </div>
 
-                <textarea class="form-control"
-                          rows="6"
-                          readonly
-                          placeholder="Conteúdo da publicação">
-                </textarea>
+                        <textarea class="form-control"
+                                  rows="4"
+                                  readonly>@post.Content</textarea>
 
-            </div>
+                    </div>
+                }
+            }
 
             <div class="d-flex justify-content-end">
 
