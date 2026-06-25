@@ -240,3 +240,13 @@ body {
 .create-post-link:hover .fake-textarea {
     color: #444;
 }
+.sidebar-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    width: 100%;
+}
+
+.sidebar-link:hover {
+    color: inherit;
+}
