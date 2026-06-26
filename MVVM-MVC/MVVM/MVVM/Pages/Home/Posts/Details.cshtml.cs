@@ -32,6 +32,8 @@ public class DetailsModel : PageModel
 
         Posts = await _context.Posts
             .Where(p => p.UserId == user.Id)
+            .Include(p => p.Comments)
+            .ThenInclude(c => c.User)
             .OrderByDescending(p => p.CreatedAt)
             .ToListAsync();
 
