@@ -1,6 +1,85 @@
 ﻿@page
 @model MVVM.Pages.Profile.IndexModel
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Perfil";
+    var nome = Model.UserName.Contains('@') ? Model.UserName.Split('@')[0] : Model.UserName;
+    var iniciais = nome.Length >= 2 ? nome.Substring(0, 2).ToUpper() : nome.ToUpper();
 }
+
+<style>
+    .perfil-wrap { max-width: 600px; margin: 0 auto; }
+    .perfil-header { display: flex; align-items: center; gap: 18px; padding: 24px; background: #fff;
+        border: 1px solid #e9ecef; border-radius: 18px; margin-bottom: 24px; }
+    .perfil-avatar { width: 80px; height: 80px; border-radius: 50%; background: #0d6efd; color: #fff;
+        display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 600; flex-shrink: 0; }
+    .perfil-nome { font-size: 22px; font-weight: 600; margin: 0; }
+    .perfil-sub { color: #6c757d; font-size: 14px; }
+    .perfil-sub strong { color: #212529; }
+    .perfil-acao { margin-left: auto; }
+    .perfil-editar { padding: 8px 18px; border: 1px solid #0d6efd; color: #0d6efd; background: transparent;
+        border-radius: 999px; text-decoration: none; font-size: 14px; white-space: nowrap; cursor: pointer; }
+    .perfil-editar:hover { background: #0d6efd; color: #fff; }
+    .perfil-seguir { padding: 8px 22px; border: 1px solid #0d6efd; background: #0d6efd; color: #fff;
+        border-radius: 999px; font-size: 14px; white-space: nowrap; cursor: pointer; }
+    .perfil-seguir:hover { background: #0b5ed7; }
+    .post-card { background: #fff; border: 1px solid #e9ecef; border-radius: 16px; padding: 18px 22px; margin-bottom: 14px; }
+    .post-data { color: #6c757d; font-size: 13px; }
+    .post-texto { font-size: 16px; margin: 6px 0 14px; }
+    .post-stats { display: flex; gap: 24px; color: #6c757d; font-size: 14px; border-top: 1px solid #f1f3f5; padding-top: 12px; }
+    .sem-posts { text-align: center; color: #6c757d; padding: 30px; border: 1px dashed #dee2e6; border-radius: 16px; }
+</style>
+
+<div class="perfil-wrap">
+
+    <div class="perfil-header">
+        <div class="perfil-avatar">@iniciais</div>
+        <div>
+            <h1 class="perfil-nome">@nome</h1>
+            <div class="perfil-sub">
+                <strong>@Model.PostCount</strong> publicações &nbsp;·&nbsp;
+                <strong>@Model.FollowersCount</strong> seguidores &nbsp;·&nbsp;
+                <strong>@Model.FollowingCount</strong> a seguir
+            </div>
+        </div>
+
+        @if (Model.IsOwnProfile)
+        {
+            <a asp-page="./Edit" class="perfil-editar perfil-acao">Editar perfil</a>
+        }
+        else if (User.Identity?.IsAuthenticated == true)
+        {
+            <form method="post" class="perfil-acao">
+                <input type="hidden" name="id" value="@Model.ProfileUserId" />
+                @if (Model.IsFollowing)
+                {
+                    <button type="submit" asp-page-handler="Unfollow" class="perfil-editar">A seguir ✓</button>
+                }
+                else
+                {
+                    <button type="submit" asp-page-handler="Follow" class="perfil-seguir">Seguir</button>
+                }
+            </form>
+        }
+    </div>
+
+    <h2 class="h6 text-muted mb-3">Publicações</h2>
+
+    @if (!Model.Posts.Any())
+    {
+        <div class="sem-posts">Este utilizador ainda não publicou nada.</div>
+    }
+    else
+    {
+        @foreach (var post in Model.Posts)
+        {
+            <div class="post-card">
+                <div class="post-data">@post.CreatedAt.ToString("dd/MM/yyyy HH:mm")</div>
+                <div class="post-texto">@post.Content</div>
+                <div class="post-stats">
+                    <span>@post.CommentCount comentários</span>
+                    <span>@post.LikeCount gostos</span>
+                </div>
+            </div>
+        }
+    }
+</div>

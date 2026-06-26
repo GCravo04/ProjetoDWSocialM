@@ -4,8 +4,8 @@
         <TargetFramework>net10.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <UserSecretsId>a5e71bd7-0efe-461c-bded-ad1110459fe4</UserSecretsId>
-    </PropertyGroup>
+      <UserSecretsId>d44b94b9-358f-4300-b3d8-816d2c35c44e</UserSecretsId>
+  </PropertyGroup>
 
 <ItemGroup>
         <None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
