@@ -16,12 +16,8 @@
         <div class="logo">nexo</div>
 
         <ul class="menu">
-            <li class="active"><i class="bi bi-house"></i> Início</li>
             <li><i class="bi bi-search"></i> Explorar</li>
-            <li><i class="bi bi-bell"></i> Notificações</li>
-            <li><i class="bi bi-envelope"></i> Mensagens</li>
             <li><i class="bi bi-person"></i> Perfil</li>
-            <li><i class="bi bi-gear"></i> Definições</li>
         </ul>
 
         <div class="profile-box">
@@ -139,6 +135,26 @@
                     </span>
 
                 </div>
+                @if (User.Identity?.IsAuthenticated ?? false)
+                {
+                    <form method="post" asp-page-handler="Comment">
+
+                        <input type="hidden"
+                               name="PostId"
+                               value="@post.PostId" />
+
+                        <input type="text"
+                               name="CommentContent"
+                               class="form-control mt-2"
+                               placeholder="Escreve um comentário..." />
+
+                        <button type="submit"
+                                class="btn btn-dark mt-2">
+                            Comentar
+                        </button>
+
+                    </form>
+                }
 
             </div>
         }
