@@ -25,6 +25,9 @@ public class IndexModel : PageModel
 
     [BindProperty]
     public Post NewPost { get; set; } = new();
+    
+    [BindProperty]
+    public int PostId { get; set; }
 
     public async Task OnGetAsync()
     {
@@ -56,6 +59,36 @@ public class IndexModel : PageModel
         NewPost.UpdatedAt = null;
 
         _context.Posts.Add(NewPost);
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToPage();
+    }
+    public async Task<IActionResult> OnPostLikeAsync()
+    {
+        var user = await _userManager.GetUserAsync(User);
+
+        if (user == null)
+            return Challenge();
+
+        var existingLike = await _context.Likes
+            .FirstOrDefaultAsync(l =>
+                l.PostId == PostId &&
+                l.UserId == user.Id);
+
+        if (existingLike != null)
+        {
+            _context.Likes.Remove(existingLike);
+        }
+        else
+        {
+            _context.Likes.Add(new Like
+            {
+                PostId = PostId,
+                UserId = user.Id,
+                CreatedAt = DateTime.UtcNow
+            });
+        }
 
         await _context.SaveChangesAsync();
 

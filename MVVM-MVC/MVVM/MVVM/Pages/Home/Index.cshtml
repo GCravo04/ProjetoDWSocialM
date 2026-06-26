@@ -136,10 +136,37 @@
                         @post.Comments.Count
                     </span>
 
-                    <span>
-                        <i class="bi bi-heart"></i>
-                        @post.Likes.Count
-                    </span>
+                    <form method="post"
+                          asp-page-handler="Like"
+                          class="d-inline">
+
+                        <input type="hidden"
+                               name="PostId"
+                               value="@post.PostId" />
+
+                        @{
+                            var liked =
+                                User.Identity?.IsAuthenticated == true &&
+                                post.Likes.Any(l => l.UserId == Model.CurrentUser?.Id);
+                        }
+
+                        <button type="submit"
+                                class="btn p-0 border-0 bg-transparent">
+
+                            @if (liked)
+                            {
+                                <i class="bi bi-heart-fill text-danger"></i>
+                            }
+                            else
+                            {
+                                <i class="bi bi-heart"></i>
+                            }
+
+                            @post.Likes.Count
+
+                        </button>
+
+                    </form>
 
                 </div>
 
