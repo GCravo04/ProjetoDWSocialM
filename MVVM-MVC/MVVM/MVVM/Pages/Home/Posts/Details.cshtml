@@ -2,7 +2,7 @@
 @model DetailsModel
 
 @{
-    ViewData["Title"] = "Detalhes das Publicações";
+    ViewData["Title"] = "Detalhes da Publicação";
 }
 
 <link rel="stylesheet" href="~/css/home.css"/>
@@ -13,83 +13,57 @@
 
         <div class="card-body">
 
-            @if (!Model.Posts.Any())
-            {
-                <p class="text-muted">
-                    Ainda não tem publicações.
-                </p>
-            }
-            else
-            {
-                @foreach (var post in Model.Posts)
+            <div class="border rounded p-3 mb-3">
+
+                <div class="mb-2">
+                    <strong>@Model.Post.User.UserName</strong>
+                    <small class="text-muted">
+                        · @Model.Post.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+                    </small>
+                </div>
+
+                <div class="mb-3">
+                    <textarea class="form-control"
+                              rows="4"
+                              readonly>@Model.Post.Content</textarea>
+                </div>
+
+                <div class="text-muted mb-3">
+                    <i class="bi bi-heart"></i> @Model.Post.Likes.Count gostos
+                    &nbsp;·&nbsp;
+                    <i class="bi bi-chat"></i> @Model.Post.Comments.Count comentários
+                </div>
+
+                @if (Model.Post.Comments.Any())
                 {
-                    <div class="border rounded p-3 mb-3">
-                        <div class="mb-2">
-                            <small class="text-muted">
-                                @post.CreatedAt.ToString("dd/MM/yyyy HH:mm")
-                            </small>
-                        </div>
+                    <div class="mt-3">
 
-                        <div class="mb-3">
+                        <h6>Comentários (@Model.Post.Comments.Count)</h6>
 
-                        <textarea class="form-control"
-                                  rows="4"
-                                  readonly>@post.Content</textarea>
-
-                        </div>
-
-                        @if (post.Comments.Any())
+                        @foreach (var comment in Model.Post.Comments.OrderBy(c => c.CreatedAt))
                         {
-                            <div class="mt-3">
-
-                                <h6>
-                                    Comentários (@post.Comments.Count)
-                                </h6>
-
-                                @foreach (var comment in post.Comments
-                                                  .OrderBy(c => c.CreatedAt))
-                                {
-                                    <div class="border rounded p-2 mb-2">
-
-                                        <div class="mb-1">
-
-                                            <strong>
-                                                @comment.User.UserName
-                                            </strong>
-
-                                            <small class="text-muted">
-                                                · @comment.CreatedAt.ToString("dd/MM/yyyy HH:mm")
-                                            </small>
-
-                                        </div>
-
-                                        <div>
-                                            @comment.Content
-                                        </div>
-
-                                    </div>
-                                }
-
+                            <div class="border rounded p-2 mb-2">
+                                <div class="mb-1">
+                                    <strong>@comment.User.UserName</strong>
+                                    <small class="text-muted">
+                                        · @comment.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+                                    </small>
+                                </div>
+                                <div>@comment.Content</div>
                             </div>
-                        }
-                        else
-                        {
-                            <p class="text-muted">
-                                Sem comentários.
-                            </p>
                         }
 
                     </div>
                 }
-            }
+                else
+                {
+                    <p class="text-muted">Sem comentários.</p>
+                }
+
+            </div>
 
             <div class="d-flex justify-content-end">
-
-                <a asp-page="/Home/Index"
-                   class="btn btn-secondary">
-                    Voltar
-                </a>
-
+                <a asp-page="/Home/Index" class="btn btn-secondary">Voltar</a>
             </div>
 
         </div>
