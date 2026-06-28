@@ -25,7 +25,7 @@ public class IndexModel : PageModel
 
     [BindProperty]
     public Post NewPost { get; set; } = new();
-    
+
     [BindProperty]
     public int PostId { get; set; }
 
@@ -40,7 +40,7 @@ public class IndexModel : PageModel
             .Include(p => p.User)
             .Include(p => p.Likes)
             .Include(p => p.Comments)
-            .ThenInclude(c => c.User)
+                .ThenInclude(c => c.User)
             .OrderByDescending(p => p.CreatedAt)
             .ToListAsync();
     }
@@ -56,7 +56,7 @@ public class IndexModel : PageModel
         var user = await _userManager.GetUserAsync(User);
 
         if (user == null)
-            return Challenge(); // obriga ao login
+            return Challenge();
 
         NewPost.UserId = user.Id;
         NewPost.CreatedAt = DateTime.UtcNow;
@@ -68,6 +68,7 @@ public class IndexModel : PageModel
 
         return RedirectToPage();
     }
+
     public async Task<IActionResult> OnPostCommentAsync()
     {
         var user = await _userManager.GetUserAsync(User);
@@ -87,6 +88,37 @@ public class IndexModel : PageModel
         };
 
         _context.Comments.Add(comment);
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToPage();
+    }
+
+    public async Task<IActionResult> OnPostLikeAsync()
+    {
+        var user = await _userManager.GetUserAsync(User);
+
+        if (user == null)
+            return Challenge();
+
+        var existingLike = await _context.Likes
+            .FirstOrDefaultAsync(l =>
+                l.PostId == PostId &&
+                l.UserId == user.Id);
+
+        if (existingLike != null)
+        {
+            _context.Likes.Remove(existingLike);
+        }
+        else
+        {
+            _context.Likes.Add(new Like
+            {
+                PostId = PostId,
+                UserId = user.Id,
+                CreatedAt = DateTime.UtcNow
+            });
+        }
 
         await _context.SaveChangesAsync();
 
