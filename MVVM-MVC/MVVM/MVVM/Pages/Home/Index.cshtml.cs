@@ -25,6 +25,12 @@ public class IndexModel : PageModel
 
     [BindProperty]
     public Post NewPost { get; set; } = new();
+    
+    [BindProperty]
+    public int PostId { get; set; }
+
+    [BindProperty]
+    public string CommentContent { get; set; } = string.Empty;
 
     public async Task OnGetAsync()
     {
@@ -34,6 +40,7 @@ public class IndexModel : PageModel
             .Include(p => p.User)
             .Include(p => p.Likes)
             .Include(p => p.Comments)
+            .ThenInclude(c => c.User)
             .OrderByDescending(p => p.CreatedAt)
             .ToListAsync();
     }
@@ -56,6 +63,30 @@ public class IndexModel : PageModel
         NewPost.UpdatedAt = null;
 
         _context.Posts.Add(NewPost);
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToPage();
+    }
+    public async Task<IActionResult> OnPostCommentAsync()
+    {
+        var user = await _userManager.GetUserAsync(User);
+
+        if (user == null)
+            return Challenge();
+
+        if (string.IsNullOrWhiteSpace(CommentContent))
+            return RedirectToPage();
+
+        var comment = new Comment
+        {
+            Content = CommentContent,
+            CreatedAt = DateTime.UtcNow,
+            UserId = user.Id,
+            PostId = PostId
+        };
+
+        _context.Comments.Add(comment);
 
         await _context.SaveChangesAsync();
 

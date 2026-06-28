@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using MVC.Models;
 
-
 namespace MVVM.Pages.Home.Posts;
 
 public class DetailsModel : PageModel
@@ -20,22 +19,29 @@ public class DetailsModel : PageModel
         _userManager = userManager;
     }
 
-    public IList<Post> Posts { get; set; } = new List<Post>();
+    // Um único post (o que corresponde ao id)
+    public Post Post { get; set; } = null!;
 
-    public async Task<IActionResult> OnGetAsync()
+    public async Task<IActionResult> OnGetAsync(int? id)
     {
-        var user = await _userManager.GetUserAsync(User);
-
-        if (user == null)
+        if (id == null)
         {
-            return Redirect("/Identity/Account/Login");
+            return NotFound();
         }
 
-        Posts = await _context.Posts
-            .Where(p => p.UserId == user.Id)
-            .OrderByDescending(p => p.CreatedAt)
-            .ToListAsync();
+        var post = await _context.Posts
+            .Include(p => p.User)
+            .Include(p => p.Comments)
+            .ThenInclude(c => c.User)
+            .Include(p => p.Likes)
+            .FirstOrDefaultAsync(p => p.PostId == id);
 
+        if (post == null)
+        {
+            return NotFound();
+        }
+
+        Post = post;
         return Page();
     }
 }

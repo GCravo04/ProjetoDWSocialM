@@ -17,14 +17,7 @@
 
         <ul class="menu">
             <li><i class="bi bi-search"></i> Explorar</li>
-            <li>
-                <a asp-area="Identity"
-                   asp-page="/Account/Manage/Index"
-                   class="sidebar-link">
-                    <i class="bi bi-person"></i>
-                    Perfil
-                </a>
-            </li>
+            <li><i class="bi bi-person"></i> Perfil</li>
         </ul>
 
         <div class="profile-box">
@@ -142,6 +135,26 @@
                     </span>
 
                 </div>
+                @if (User.Identity?.IsAuthenticated ?? false)
+                {
+                    <form method="post" asp-page-handler="Comment">
+
+                        <input type="hidden"
+                               name="PostId"
+                               value="@post.PostId" />
+
+                        <input type="text"
+                               name="CommentContent"
+                               class="form-control mt-2"
+                               placeholder="Escreve um comentário..." />
+
+                        <button type="submit"
+                                class="btn btn-dark mt-2">
+                            Comentar
+                        </button>
+
+                    </form>
+                }
 
             </div>
         }

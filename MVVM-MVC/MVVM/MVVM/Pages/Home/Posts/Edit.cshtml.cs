@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using MVC.Models;
 
-
 namespace MVVM.Pages.Home.Posts;
 
 public class EditModel : PageModel
