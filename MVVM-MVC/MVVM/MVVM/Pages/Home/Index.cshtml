@@ -96,15 +96,15 @@
 
                 <div class="post-header">
 
-                    <div class="avatar">
+                    <a asp-page="/Profile/Index" asp-route-id="@post.UserId" class="avatar" style="text-decoration:none;color:inherit;">
                         @post.User.UserName.Substring(0, Math.Min(2, post.User.UserName.Length)).ToUpper()
-                    </div>
+                    </a>
 
                     <div>
 
-                        <span class="post-name">
+                        <a asp-page="/Profile/Index" asp-route-id="@post.UserId" class="post-name" style="text-decoration:none;color:inherit;">
                             @post.User.UserName
-                        </span>
+                        </a>
 
                         <span class="post-user">
                             @("@"+post.User.UserName)
@@ -185,8 +185,6 @@
 
             </div>
         }
-
-    </main>
 
     <!-- SUGESTÕES -->
 
