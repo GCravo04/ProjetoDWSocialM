@@ -1,6 +1,105 @@
 ﻿@page
 @model MVVM.Pages.Profile.EditModel
-
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Perfil";
+    var nome = Model.Input.UserName?.Contains('@') == true
+        ? Model.Input.UserName.Split('@')[0]
+        : Model.Input.UserName ?? "";
+    var iniciais = nome.Length >= 2 ? nome.Substring(0, 2).ToUpper() : nome.ToUpper();
+}
+<link rel="stylesheet" href="~/css/Profile.css" />
+
+<div class="perfil-wrap">
+
+    <div class="perfil-header">
+        <div class="perfil-avatar">@iniciais</div>
+        <div>
+            <h1 class="perfil-nome">@nome</h1>
+            <p class="text-muted mb-0" style="font-size:.9rem;">A editar o teu perfil</p>
+        </div>
+    </div>
+
+    @if (!ModelState.IsValid)
+    {
+        <div class="alert alert-danger mt-3">
+            <ul class="mb-0">
+                @foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+        </div>
+    }
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success mt-3">@TempData["SuccessMessage"]</div>
+    }
+
+    
+    <form method="post" asp-page-handler="Save" class="edit-form mt-4">
+
+        <div class="edit-section">
+            <h2 class="h6 text-muted mb-3">Informações da conta</h2>
+
+            <div class="edit-field">
+                <label asp-for="Input.UserName">Nome de utilizador</label>
+                <input asp-for="Input.UserName" class="edit-input" autocomplete="username" />
+                <span asp-validation-for="Input.UserName" class="edit-erro"></span>
+            </div>
+
+            <div class="edit-field">
+                <label asp-for="Input.Email">Email</label>
+                <input asp-for="Input.Email" class="edit-input" autocomplete="email" />
+                <span asp-validation-for="Input.Email" class="edit-erro"></span>
+            </div>
+            
+        </div>
+
+        <div class="edit-section mt-4">
+            <h2 class="h6 text-muted mb-3">Alterar password</h2>
+            <p class="text-muted" style="font-size:.85rem;">Deixa em branco para manter a password atual.</p>
+
+            <div class="edit-field">
+                <label asp-for="Input.CurrentPassword">Password atual</label>
+                <input asp-for="Input.CurrentPassword" type="password"
+                       class="edit-input" autocomplete="current-password" />
+                <span asp-validation-for="Input.CurrentPassword" class="edit-erro"></span>
+            </div>
+
+            <div class="edit-field">
+                <label asp-for="Input.NewPassword">Nova password</label>
+                <input asp-for="Input.NewPassword" type="password"
+                       class="edit-input" autocomplete="new-password" />
+                <span asp-validation-for="Input.NewPassword" class="edit-erro"></span>
+            </div>
+
+            <div class="edit-field">
+                <label asp-for="Input.ConfirmPassword">Confirmar nova password</label>
+                <input asp-for="Input.ConfirmPassword" type="password"
+                       class="edit-input" autocomplete="new-password" />
+                <span asp-validation-for="Input.ConfirmPassword" class="edit-erro"></span>
+            </div>
+        </div>
+
+        <div class="edit-acoes mt-4">
+            <button type="submit" class="perfil-seguir">Guardar alterações</button>
+            <a asp-page="./Index" asp-route-username="@nome" class="perfil-editar">Cancelar</a>
+        </div>
+    </form>
+
+    
+    <div class="danger-zone mt-5">
+        <h2 class="h6 text-danger mb-1">Eliminar conta</h2>
+        <p class="text-muted" style="font-size:.85rem;">
+            Ao eliminares a tua conta, todos os teus dados, publicações e seguidores
+            serão apagados permanentemente.
+        </p>
+        <a asp-page="./Delete" class="btn-danger-outline">Eliminar conta</a>
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }
