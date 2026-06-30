@@ -1,6 +1,64 @@
 ﻿@page
 @model MVVM.Pages.Profile.DeleteModel
-
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Eliminar Conta";
 }
+<link rel="stylesheet" href="~/css/Profile.css" />
+
+<div class="perfil-wrap">
+
+    <div class="perfil-header">
+        <div class="perfil-avatar" style="background: #ef4444;">
+            ⚠
+        </div>
+        <div>
+            <h1 class="perfil-nome">Eliminar conta</h1>
+            <p class="text-muted mb-0" style="font-size:.9rem;">Esta ação é irreversível</p>
+        </div>
+    </div>
+
+    <div class="danger-zone mt-4" style="max-width:520px;">
+        <p style="font-size:.95rem; color:#374151; margin-bottom:1rem;">
+            Ao eliminares a tua conta irás perder permanentemente:
+        </p>
+        <ul style="font-size:.9rem; color:#6b7280; margin-bottom:1.25rem; padding-left:1.2rem; line-height:1.9;">
+            <li>O teu perfil e informações pessoais</li>
+            <li>Todas as tuas publicações</li>
+            <li>Os teus seguidores e utilizadores que segues</li>
+        </ul>
+        <p style="font-size:.9rem; color:#374151; font-weight:600;">
+            Não existe forma de recuperar a conta após esta ação.
+        </p>
+    </div>
+
+    @if (TempData["DeleteError"] != null)
+    {
+        <div class="alert alert-danger mt-3" style="max-width:520px;">
+            @TempData["DeleteError"]
+        </div>
+    }
+
+    <!-- ── FORMULÁRIO DE CONFIRMAÇÃO ── -->
+    <form method="post" class="edit-form mt-4">
+
+        <div class="edit-section">
+            <h2 class="h6 text-muted mb-3">Confirma a tua identidade</h2>
+
+            <div class="edit-field">
+                <label for="deletePassword">Password atual</label>
+                <input type="password" name="deletePassword" id="deletePassword"
+                       class="edit-input" autocomplete="current-password"
+                       placeholder="Introduz a tua password" required />
+            </div>
+        </div>
+
+        <div class="edit-acoes mt-4">
+            <button type="submit" class="btn-danger-solid">
+                Eliminar conta definitivamente
+            </button>
+            <a asp-page="./Edit" class="perfil-editar">Cancelar</a>
+        </div>
+
+    </form>
+
+</div>
