@@ -144,16 +144,18 @@
 
                 </div>
 
-                <div class="post-content">
+                <a asp-page="/Home/Posts/Details" asp-route-id="@post.PostId"
+                   class="post-content" style="text-decoration:none; color:inherit; display:block; cursor:pointer;">
                     @post.Content
-                </div>
+                </a>
 
                 <div class="post-actions">
 
-                    <span>
+                    <a asp-page="/Home/Posts/Details" asp-route-id="@post.PostId"
+                       style="text-decoration:none; color:inherit;">
                         <i class="bi bi-chat"></i>
                         @post.Comments.Count
-                    </span>
+                    </a>
 
                     <form method="post"
                           asp-page-handler="Like"
