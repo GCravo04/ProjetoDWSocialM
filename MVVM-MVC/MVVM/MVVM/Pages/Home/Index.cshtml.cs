@@ -33,45 +33,38 @@ public class IndexModel : PageModel
 
     [BindProperty]
     public string CommentContent { get; set; } = string.Empty;
-
+    
     public async Task OnGetAsync(string feed = "all")
     {
+        CurrentFeed = feed;
         CurrentUser = await _userManager.GetUserAsync(User);
 
-        Posts = await _context.Posts
-            .Include(p => p.User)
-            .Include(p => p.Likes)
-            .Include(p => p.Comments)
-                .ThenInclude(c => c.User)
-            .OrderByDescending(p => p.CreatedAt)
-            .ToListAsync();
-        
-            if (feed == "following" && CurrentUser != null)
-            {
-                var followingIds = await _context.Follows
-                    .Where(f => f.FollowerUserId == CurrentUser.Id)
-                    .Select(f => f.FollowedUserId)
-                    .ToListAsync();
+        if (feed == "following" && CurrentUser != null)
+        {
+            var followingIds = await _context.Follows
+                .Where(f => f.FollowerUserId == CurrentUser.Id)
+                .Select(f => f.FollowedUserId)
+                .ToListAsync();
 
-                Posts = await _context.Posts
-                    .Include(p => p.User)
-                    .Include(p => p.Likes)
-                    .Include(p => p.Comments)
-                    .ThenInclude(c => c.User)
-                    .Where(p => followingIds.Contains(p.UserId))
-                    .OrderByDescending(p => p.CreatedAt)
-                    .ToListAsync();
-            }
-            else
-            {
-                Posts = await _context.Posts
-                    .Include(p => p.User)
-                    .Include(p => p.Likes)
-                    .Include(p => p.Comments)
-                    .ThenInclude(c => c.User)
-                    .OrderByDescending(p => p.CreatedAt)
-                    .ToListAsync();
-            }
+            Posts = await _context.Posts
+                .Include(p => p.User)
+                .Include(p => p.Likes)
+                .Include(p => p.Comments)
+                .ThenInclude(c => c.User)
+                .Where(p => followingIds.Contains(p.UserId))
+                .OrderByDescending(p => p.CreatedAt)
+                .ToListAsync();
+        }
+        else
+        {
+            Posts = await _context.Posts
+                .Include(p => p.User)
+                .Include(p => p.Likes)
+                .Include(p => p.Comments)
+                .ThenInclude(c => c.User)
+                .OrderByDescending(p => p.CreatedAt)
+                .ToListAsync();
+        }
     }
 
     public async Task<IActionResult> OnPostAsync()
