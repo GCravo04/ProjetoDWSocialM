@@ -19,6 +19,8 @@ public class IndexModel : PageModel
         _userManager = userManager;
     }
 
+    
+    public string CurrentFeed { get; set; } = "all";
     public IList<Post> Posts { get; set; } = new List<Post>();
 
     public AppUser? CurrentUser { get; set; }
@@ -32,7 +34,7 @@ public class IndexModel : PageModel
     [BindProperty]
     public string CommentContent { get; set; } = string.Empty;
 
-    public async Task OnGetAsync()
+    public async Task OnGetAsync(string feed = "all")
     {
         CurrentUser = await _userManager.GetUserAsync(User);
 
@@ -43,6 +45,33 @@ public class IndexModel : PageModel
                 .ThenInclude(c => c.User)
             .OrderByDescending(p => p.CreatedAt)
             .ToListAsync();
+        
+            if (feed == "following" && CurrentUser != null)
+            {
+                var followingIds = await _context.Follows
+                    .Where(f => f.FollowerUserId == CurrentUser.Id)
+                    .Select(f => f.FollowedUserId)
+                    .ToListAsync();
+
+                Posts = await _context.Posts
+                    .Include(p => p.User)
+                    .Include(p => p.Likes)
+                    .Include(p => p.Comments)
+                    .ThenInclude(c => c.User)
+                    .Where(p => followingIds.Contains(p.UserId))
+                    .OrderByDescending(p => p.CreatedAt)
+                    .ToListAsync();
+            }
+            else
+            {
+                Posts = await _context.Posts
+                    .Include(p => p.User)
+                    .Include(p => p.Likes)
+                    .Include(p => p.Comments)
+                    .ThenInclude(c => c.User)
+                    .OrderByDescending(p => p.CreatedAt)
+                    .ToListAsync();
+            }
     }
 
     public async Task<IActionResult> OnPostAsync()

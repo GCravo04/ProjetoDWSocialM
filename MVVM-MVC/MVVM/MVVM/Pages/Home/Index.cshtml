@@ -49,10 +49,18 @@
 
     <main class="feed">
 
-        <div class="tabs">
-            <div class="tab active">Para si</div>
-            <div class="tab">A seguir</div>
-        </div>
+        <a asp-page="/Home/Index"
+           asp-route-feed="all"
+           class="tab @(Model.CurrentFeed == "all" ? "active" : "")">
+            Para si
+        </a>
+
+        <a asp-page="/Home/Index"
+           asp-route-feed="following"
+           class="tab @(Model.CurrentFeed == "following" ? "active" : "")">
+            A seguir
+        </a>
+
 
         <!-- NOVA PUBLICAÇÃO -->
 
@@ -217,21 +225,4 @@
         }
 
     </main>
-
-    <!-- SUGESTÕES -->
-
-    <aside class="right">
-
-        <div class="suggestions">
-
-            <h5>Quem seguir</h5>
-
-            <p class="text-muted">
-               
-            </p>
-
-        </div>
-
-    </aside>
-
 </div>
