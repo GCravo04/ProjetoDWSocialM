@@ -48,10 +48,21 @@
     <!-- FEED -->
 
     <main class="feed">
+        
+        <div class="feed-tabs">
 
-        <div class="tabs">
-            <div class="tab active">Para si</div>
-            <div class="tab">A seguir</div>
+            <a asp-page="/Home/Index"
+               asp-route-feed="all"
+               class="feed-tab @(Model.CurrentFeed == "all" ? "active" : "")">
+                Para si
+            </a>
+
+            <a asp-page="/Home/Index"
+               asp-route-feed="following"
+               class="feed-tab @(Model.CurrentFeed == "following" ? "active" : "")">
+                A seguir
+            </a>
+
         </div>
 
         <!-- NOVA PUBLICAÇÃO -->
@@ -133,7 +144,7 @@
                         </a>
 
                         <span class="post-user">
-                            @("@"+post.User.UserName)
+                            @("@" + post.User.UserName)
                         </span>
 
                         <span class="post-time">
@@ -163,7 +174,7 @@
 
                         <input type="hidden"
                                name="PostId"
-                               value="@post.PostId" />
+                               value="@post.PostId"/>
 
                         @{
                             var liked =
@@ -200,12 +211,12 @@
 
                         <input type="hidden"
                                name="PostId"
-                               value="@post.PostId" />
+                               value="@post.PostId"/>
 
                         <input type="text"
                                name="CommentContent"
                                class="form-control mt-2"
-                               placeholder="Escreve um comentário..." />
+                               placeholder="Escreve um comentário..."/>
 
                         <button type="submit"
                                 class="btn btn-dark mt-2">
@@ -219,21 +230,4 @@
         }
 
     </main>
-
-    <!-- SUGESTÕES -->
-
-    <aside class="right">
-
-        <div class="suggestions">
-
-            <h5>Quem seguir</h5>
-
-            <p class="text-muted">
-               
-            </p>
-
-        </div>
-
-    </aside>
-
 </div>
