@@ -173,7 +173,7 @@
                     </a>
 
                     <form method="post"
-                          asp-page-handler="Like"
+                          asp-page="/Home/Likes/Toggle"
                           class="d-inline">
 
                         <input type="hidden"
@@ -211,7 +211,7 @@
                 @if (User.Identity?.IsAuthenticated ?? false)
                 {
                     <form method="post"
-                          asp-page-handler="Comment">
+                          asp-page="/Home/Comments/Create">
 
                         <input type="hidden"
                                name="PostId"
