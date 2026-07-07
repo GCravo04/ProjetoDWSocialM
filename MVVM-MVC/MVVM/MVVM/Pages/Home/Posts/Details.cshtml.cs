@@ -19,11 +19,13 @@ public class DetailsModel : PageModel
         _userManager = userManager;
     }
 
-    // Um único post (o que corresponde ao id)
+   
     public Post Post { get; set; } = null!;
+    public AppUser? CurrentUser { get; set; }
 
     public async Task<IActionResult> OnGetAsync(int? id)
     {
+        CurrentUser = await _userManager.GetUserAsync(User);
         if (id == null)
         {
             return NotFound();

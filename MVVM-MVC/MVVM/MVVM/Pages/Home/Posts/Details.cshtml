@@ -51,6 +51,17 @@
                                 </div>
                                 <div>@comment.Content</div>
                             </div>
+                            
+                            @if (User.Identity?.IsAuthenticated == true &&
+                                 (comment.UserId == Model.CurrentUser?.Id || User.IsInRole("Admin")))
+                            {
+                                <form method="post" asp-page="/Home/Comments/Delete" class="mt-2">
+                                    <input type="hidden" name="CommentId" value="@comment.CommentId" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        Eliminar
+                                    </button>
+                                </form>
+                            }
                         }
 
                     </div>
