@@ -163,15 +163,7 @@
                    class="post-content" style="text-decoration:none; color:inherit; display:block; cursor:pointer;">
                     @post.Content
                 </a>
-
-                <div class="post-actions">
-
-                    <a asp-page="/Home/Posts/Details" asp-route-id="@post.PostId"
-                       style="text-decoration:none; color:inherit;">
-                        <i class="bi bi-chat"></i>
-                        @post.Comments.Count
-                    </a>
-
+                
                     <div class="post-actions">
 
                         <a asp-page="/Home/Posts/Details"
@@ -200,8 +192,7 @@
                         </button>
 
                     </div>
-
-                </div>
+                    
 
                 @if (User.Identity?.IsAuthenticated ?? false)
                 {
