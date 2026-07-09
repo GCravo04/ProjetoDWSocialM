@@ -1,19 +1,18 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using MVC.Models;
 
-namespace MVVM.Pages.Likes;
+namespace MVVM.Hubs;
 
 [Authorize]
-public class ToggleModel : PageModel
+public class FeedHub : Hub
 {
     private readonly ApplicationDbContext _context;
     private readonly UserManager<AppUser> _userManager;
 
-    public ToggleModel(
+    public FeedHub(
         ApplicationDbContext context,
         UserManager<AppUser> userManager)
     {
@@ -21,36 +20,47 @@ public class ToggleModel : PageModel
         _userManager = userManager;
     }
 
-    [BindProperty]
-    public int PostId { get; set; }
-
-    public async Task<IActionResult> OnPostAsync()
+    public async Task ToggleLike(int postId)
     {
-        var user = await _userManager.GetUserAsync(User);
+        var user = await _userManager.GetUserAsync(Context.User);
 
         if (user == null)
-            return Challenge();
+            return;
 
         var like = await _context.Likes.FirstOrDefaultAsync(l =>
-            l.PostId == PostId &&
+            l.PostId == postId &&
             l.UserId == user.Id);
+
+        bool liked;
 
         if (like == null)
         {
             _context.Likes.Add(new Like
             {
-                PostId = PostId,
+                PostId = postId,
                 UserId = user.Id,
                 CreatedAt = DateTime.UtcNow
             });
+
+            liked = true;
         }
         else
         {
             _context.Likes.Remove(like);
+
+            liked = false;
         }
 
         await _context.SaveChangesAsync();
 
-        return RedirectToPage("/Home/Index");
+        var totalLikes = await _context.Likes
+            .CountAsync(l => l.PostId == postId);
+
+        await Clients.All.SendAsync(
+            "LikeUpdated",
+            postId,
+            totalLikes,
+            user.Id,
+            liked);
     }
 }

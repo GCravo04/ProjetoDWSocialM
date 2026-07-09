@@ -1,10 +1,10 @@
 ﻿@page
-@model MVVM.Pages.Home.IndexModel
+@model IndexModel
 @{
     ViewData["Title"] = "Home";
 }
 
-<link rel="stylesheet" href="~/css/home.css" />
+<link rel="stylesheet" href="~/css/home.css"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 <div class="layout">
@@ -16,7 +16,7 @@
         <div class="logo">nexo</div>
 
         <ul class="menu">
-            
+
             <li>
                 <a asp-page="/Home/Explore/Index"
                    class="sidebar-link">
@@ -41,8 +41,8 @@
             </div>
 
             <div>
-                <strong>@Model.CurrentUser?.UserName</strong><br />
-                <small>@("@"+Model.CurrentUser?.UserName)</small>
+                <strong>@Model.CurrentUser?.UserName</strong><br/>
+                <small>@("@" + Model.CurrentUser?.UserName)</small>
             </div>
 
         </div>
@@ -52,7 +52,7 @@
     <!-- FEED -->
 
     <main class="feed">
-        
+
         <div class="feed-tabs">
 
             <a asp-page="/Home/Index"
@@ -172,39 +172,34 @@
                         @post.Comments.Count
                     </a>
 
-                    <form method="post"
-                          asp-page="/Home/Likes/Toggle"
-                          class="d-inline">
+                    <div class="post-actions">
 
-                        <input type="hidden"
-                               name="PostId"
-                               value="@post.PostId"/>
+                        <a asp-page="/Home/Posts/Details"
+                           asp-route-id="@post.PostId"
+                           style="text-decoration:none;color:inherit;">
+                            <i class="bi bi-chat"></i>
+                            @post.Comments.Count
+                        </a>
 
                         @{
                             var liked =
                                 User.Identity?.IsAuthenticated == true &&
-                                post.Likes.Any(
-                                    l => l.UserId == Model.CurrentUser?.Id
-                                );
+                                post.Likes.Any(l => l.UserId == Model.CurrentUser?.Id);
                         }
 
-                        <button type="submit"
-                                class="btn p-0 border-0 bg-transparent">
+                        <button type="button"
+                                id="like-@post.PostId"
+                                class="btn p-0 border-0 bg-transparent like-btn"
+                                data-post="@post.PostId">
 
-                            @if (liked)
-                            {
-                                <i class="bi bi-heart-fill text-danger"></i>
-                            }
-                            else
-                            {
-                                <i class="bi bi-heart"></i>
-                            }
+                            <i id="heart-@post.PostId"
+                               class="bi @(liked ? "bi-heart-fill text-danger" : "bi-heart")">
+                            </i>
 
-                            @post.Likes.Count
-
+                            <span class="like-count">@post.Likes.Count</span>
                         </button>
 
-                    </form>
+                    </div>
 
                 </div>
 
@@ -235,3 +230,59 @@
 
     </main>
 </div>
+
+@section Scripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
+
+    <script>
+
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/feedHub")
+            .build();
+
+        connection.on("LikeUpdated", function (postId, totalLikes, userId, liked) {
+
+            const btn = document.getElementById("like-" + postId);
+
+            if (!btn)
+                return;
+
+            btn.querySelector(".like-count").innerText = totalLikes;
+
+            
+            if (userId === "@Model.CurrentUser?.Id") {
+
+                const heart = document.getElementById("heart-" + postId);
+
+                if (liked) {
+                    heart.classList.remove("bi-heart");
+                    heart.classList.add("bi-heart-fill", "text-danger");
+                }
+                else {
+                    heart.classList.remove("bi-heart-fill", "text-danger");
+                    heart.classList.add("bi-heart");
+                }
+            }
+
+        });
+
+        connection.start()
+            .then(() => console.log("Ligado ao SignalR"))
+            .catch(err => console.error(err));
+
+        document.querySelectorAll(".like-btn").forEach(btn => {
+
+            btn.addEventListener("click", function () {
+
+                const postId = this.dataset.post;
+
+                connection.invoke("ToggleLike", parseInt(postId))
+                    .catch(err => console.error(err));
+
+            });
+
+        });
+        
+    </script>
+}
