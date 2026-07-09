@@ -1,0 +1,60 @@
+@page
+@model MVVM.Pages.BackOffice.UsersModel
+@{
+    ViewData["Title"] = "Gestão de Utilizadores";
+}
+
+<div class="container" style="max-width: 800px;">
+    <h1 class="h4 mb-1">Gestão de Utilizadores</h1>
+    <p class="text-muted mb-4">Área de administração — promover, despromover e remover utilizadores.</p>
+
+    <form method="get" class="mb-3 d-flex gap-2">
+        <input asp-for="Search" class="form-control" placeholder="Pesquisar por nome de utilizador..." />
+        <button type="submit" class="btn btn-primary">Pesquisar</button>
+    </form>
+
+    <table class="table align-middle">
+        <thead>
+            <tr>
+                <th>Utilizador</th>
+                <th>Tipo</th>
+                <th class="text-end">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var u in Model.Users)
+        {
+            <tr>
+                <td>@u.UserName</td>
+                <td>
+                    @if (u.IsAdmin)
+                    {
+                        <span class="badge bg-danger">Admin</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Utilizador</span>
+                    }
+                </td>
+                <td class="text-end">
+                    <form method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@u.Id" />
+                        <button type="submit" asp-page-handler="ToggleAdmin" class="btn btn-sm btn-outline-primary">
+                            @(u.IsAdmin ? "Remover admin" : "Tornar admin")
+                        </button>
+                    </form>
+                    <form method="post" class="d-inline" onsubmit="return confirm('Apagar este utilizador?');">
+                        <input type="hidden" name="id" value="@u.Id" />
+                        <button type="submit" asp-page-handler="Delete" class="btn btn-sm btn-outline-danger">Apagar</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    @if (!Model.Users.Any())
+    {
+        <p class="text-muted text-center">Nenhum utilizador encontrado.</p>
+    }
+</div>
