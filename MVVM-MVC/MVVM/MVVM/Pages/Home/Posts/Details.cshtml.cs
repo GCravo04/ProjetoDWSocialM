@@ -28,8 +28,7 @@ public class DetailsModel : PageModel
         CurrentUser = await _userManager.GetUserAsync(User);
         if (id == null)
         {
-            return NotFound();
-        }
+            return NotFound(); }
 
         var post = await _context.Posts
             .Include(p => p.User)

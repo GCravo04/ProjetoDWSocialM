@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MVVM.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,11 +12,11 @@ var connectionString =
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
+
+builder.Services.AddSignalR();
+
 // Identity
-builder.Services.AddDefaultIdentity<AppUser>(options =>
-    {
-        options.SignIn.RequireConfirmedAccount = false;
-    })
+builder.Services.AddDefaultIdentity<AppUser>(options => { options.SignIn.RequireConfirmedAccount = false; })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -42,6 +43,7 @@ app.MapStaticAssets();
 app.MapRazorPages()
     .WithStaticAssets();
 
+app.MapHub<FeedHub>("/feedHub");
 // Seed de roles e utilizador admin
 using (var scope = app.Services.CreateScope())
 {
@@ -52,12 +54,8 @@ using (var scope = app.Services.CreateScope())
     // Garante que os roles existem
     string[] roles = { "Admin", "User" };
     foreach (var role in roles)
-    {
         if (!await roleManager.RoleExistsAsync(role))
-        {
             await roleManager.CreateAsync(new IdentityRole(role));
-        }
-    }
 
     // Garante que existe um utilizador admin
     var adminEmail = "admin@socialm.com";
