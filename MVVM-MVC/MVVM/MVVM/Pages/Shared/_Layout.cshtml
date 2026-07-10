@@ -1,4 +1,13 @@
-﻿<!DOCTYPE html>
+﻿@using MVC.Models
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> UserManager
+
+
+@{
+    var currentUser = await UserManager.GetUserAsync(User);
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -76,8 +85,9 @@
 
                     @if (User.Identity?.IsAuthenticated ?? false)
                     {
-                        <a asp-area="Identity"
-                           asp-page="/Account/Manage/Index"
+
+                        <a asp-page="/Profile/Index"
+                           asp-route-id="@currentUser?.Id"
                            class="btn btn-outline-dark">
 
                             <i class="bi bi-person-circle"></i>
