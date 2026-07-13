@@ -56,11 +56,22 @@
                 Para si
             </a>
 
-            <a asp-page="/Home/Index"
-               asp-route-feed="following"
-               class="feed-tab @(Model.CurrentFeed == "following" ? "active" : "")">
-                A seguir
-            </a>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <a asp-page="/Home/Index"
+                   asp-route-feed="following"
+                   class="feed-tab @(Model.CurrentFeed == "following" ? "active" : "")">
+                    A seguir
+                </a>
+            }
+            else
+            {
+                <a asp-area="Identity"
+                   asp-page="/Account/Login"
+                   class="feed-tab">
+                    A seguir
+                </a>
+            }
 
         </div>
 
