@@ -1,85 +1,75 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVC.Models;
 using MVC.Models.DTOs;
 
-namespace MVC
+namespace MVC.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+[Authorize]
+public class LikeController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class LikeController : ControllerBase
+    private readonly ApplicationDbContext _context;
+    private readonly UserManager<AppUser> _userManager;
+
+    public LikeController(
+        ApplicationDbContext context,
+        UserManager<AppUser> userManager)
     {
-        private readonly ApplicationDbContext _context;
+        _context = context;
+        _userManager = userManager;
+    }
 
-        public LikeController(ApplicationDbContext context)
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Like>>> GetLikes()
+    {
+        return await _context.Likes.ToListAsync();
+    }
+
+    [HttpPost("Toggle")]
+    public async Task<IActionResult> ToggleLike(LikeDTO dto)
+    {
+        var user = await _userManager.GetUserAsync(User);
+
+        if (user == null)
+            return Unauthorized();
+
+        var like = await _context.Likes.FirstOrDefaultAsync(l =>
+            l.PostId == dto.PostId &&
+            l.UserId == user.Id);
+
+        bool liked;
+
+        if (like == null)
         {
-            _context = context;
-        }
-
-        // GET: api/Like
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Like>>> GetLikes()
-        {
-            return await _context.Likes.ToListAsync();
-        }
-
-        // GET: api/Like/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Like>> GetLike(string id)
-        {
-            var like = await _context.Likes.FindAsync(id);
-
-            if (like == null)
+            _context.Likes.Add(new Like
             {
-                return NotFound();
-            }
-
-            return like;
-        }
-        
-
-        // POST: api/Like
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754[HttpPost]
-        [HttpPost]
-        public async Task<ActionResult<Like>> PostLike(LikeDTO dto)
-        {
-            var like = new Like
-            {
-                UserId = dto.UserId,
+                UserId = user.Id,
                 PostId = dto.PostId,
                 CreatedAt = DateTime.UtcNow
-            };
+            });
 
-            _context.Likes.Add(like);
-            await _context.SaveChangesAsync();
-
-            return Ok(like);
+            liked = true;
         }
-
-        // DELETE: api/Like/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLike(string id)
+        else
         {
-            var like = await _context.Likes.FindAsync(id);
-            if (like == null)
-            {
-                return NotFound();
-            }
-
             _context.Likes.Remove(like);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            liked = false;
         }
 
-        private bool LikeExists(string id)
+        await _context.SaveChangesAsync();
+
+        var totalLikes = await _context.Likes
+            .CountAsync(l => l.PostId == dto.PostId);
+
+        return Ok(new
         {
-            return _context.Likes.Any(e => e.UserId == id);
-        }
+            PostId = dto.PostId,
+            TotalLikes = totalLikes,
+            Liked = liked
+        });
     }
 }

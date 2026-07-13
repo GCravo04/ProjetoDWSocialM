@@ -1,12 +1,12 @@
-﻿namespace MVC.Models.DTOs;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MVC.Models.DTOs;
 
 public class FollowDTO
 {
-    public int FollowId { get; set; }
+    [Required]
+    public string FollowerUserId { get; set; } = string.Empty;
 
-    public string? FollowerUserId { get; set; }
-
+    [Required]
     public string FollowedUserId { get; set; } = string.Empty;
-
-    public DateTime CreatedAt { get; set; }
 }
