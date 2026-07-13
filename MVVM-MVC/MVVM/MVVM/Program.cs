@@ -31,6 +31,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// Redireciona erros de status
+app.UseStatusCodePagesWithReExecute("/Error/{0}");
+
 app.UseHttpsRedirection();
 
 app.UseRouting();
