@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVC.Models;
@@ -7,29 +9,37 @@ namespace MVC.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class LikeController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
+    private readonly UserManager<AppUser> _userManager;
 
-    public LikeController(ApplicationDbContext context)
+    public LikeController(
+        ApplicationDbContext context,
+        UserManager<AppUser> userManager)
     {
         _context = context;
+        _userManager = userManager;
     }
 
-    // GET: api/Like
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Like>>> GetLikes()
     {
         return await _context.Likes.ToListAsync();
     }
 
-    // POST: api/Like/Toggle
     [HttpPost("Toggle")]
     public async Task<IActionResult> ToggleLike(LikeDTO dto)
     {
+        var user = await _userManager.GetUserAsync(User);
+
+        if (user == null)
+            return Unauthorized();
+
         var like = await _context.Likes.FirstOrDefaultAsync(l =>
             l.PostId == dto.PostId &&
-            l.UserId == dto.UserId);
+            l.UserId == user.Id);
 
         bool liked;
 
@@ -37,7 +47,7 @@ public class LikeController : ControllerBase
         {
             _context.Likes.Add(new Like
             {
-                UserId = dto.UserId,
+                UserId = user.Id,
                 PostId = dto.PostId,
                 CreatedAt = DateTime.UtcNow
             });
@@ -47,7 +57,6 @@ public class LikeController : ControllerBase
         else
         {
             _context.Likes.Remove(like);
-
             liked = false;
         }
 
