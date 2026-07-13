@@ -20,13 +20,7 @@ namespace MVC.Controllers
         {
             _context = context;
         }
-
-        // GET: api/Comment
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Comment>>> GetComments()
-        {
-            return await _context.Comments.ToListAsync();
-        }
+        
 
         // GET: api/Comment/5
         [HttpGet("{id}")]
