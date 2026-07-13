@@ -69,6 +69,16 @@
                         </a>
                     </li>
 
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-page="/BackOffice/Users">
+                                Administração
+                            </a>
+                        </li>
+                    }
+
                 </ul>
 
                 <!-- Right menu -->
