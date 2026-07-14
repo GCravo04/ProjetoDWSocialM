@@ -26,6 +26,8 @@ public class EditModel : PageModel
     [BindProperty]
     public InputModel Input { get; set; } = new();
 
+    public string? ProfileImageUrl { get; set; }
+
     public class InputModel
     {
         [Required(ErrorMessage = "O nome de utilizador é obrigatório.")]
@@ -69,6 +71,8 @@ public class EditModel : PageModel
             Email    = user.Email    ?? string.Empty,
         };
 
+        ProfileImageUrl = user.ProfileImageUrl;
+
         return Page();
     }
 
@@ -85,6 +89,8 @@ public class EditModel : PageModel
 
         var user = await _userManager.GetUserAsync(User);
         if (user is null) return NotFound();
+
+        ProfileImageUrl = user.ProfileImageUrl;
 
         var errors = new List<string>();
 
@@ -136,6 +142,7 @@ public class EditModel : PageModel
 
                 user.ProfileImageUrl = $"/uploads/{nomeFicheiro}";
                 await _userManager.UpdateAsync(user);
+                ProfileImageUrl = user.ProfileImageUrl;
             }
         }
 

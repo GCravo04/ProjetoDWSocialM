@@ -28,12 +28,19 @@
 
         <div class="profile-box">
 
-            <div class="avatar">
-                @Model.CurrentUser?.UserName?.Substring(
-                    0,
-                    Math.Min(2, Model.CurrentUser.UserName.Length)
-                ).ToUpper()
-            </div>
+            @if (!string.IsNullOrWhiteSpace(Model.CurrentUser?.ProfileImageUrl))
+            {
+                <img src="@Model.CurrentUser.ProfileImageUrl" class="avatar" style="object-fit:cover;" alt="Foto de perfil" />
+            }
+            else
+            {
+                <div class="avatar">
+                    @Model.CurrentUser?.UserName?.Substring(
+                        0,
+                        Math.Min(2, Model.CurrentUser.UserName.Length)
+                    ).ToUpper()
+                </div>
+            }
 
             <div>
                 <strong>@Model.CurrentUser?.UserName</strong><br/>
@@ -86,12 +93,19 @@
 
                     <div class="composer-top">
 
-                        <div class="avatar">
-                            @Model.CurrentUser?.UserName?.Substring(
-                                0,
-                                Math.Min(2, Model.CurrentUser.UserName.Length)
-                            ).ToUpper()
-                        </div>
+                        @if (!string.IsNullOrWhiteSpace(Model.CurrentUser?.ProfileImageUrl))
+                        {
+                            <img src="@Model.CurrentUser.ProfileImageUrl" class="avatar" style="object-fit:cover;" alt="Foto de perfil" />
+                        }
+                        else
+                        {
+                            <div class="avatar">
+                                @Model.CurrentUser?.UserName?.Substring(
+                                    0,
+                                    Math.Min(2, Model.CurrentUser.UserName.Length)
+                                ).ToUpper()
+                            </div>
+                        }
 
                         <div class="fake-textarea">
                             O que se passa?
@@ -133,12 +147,20 @@
                     <a asp-page="/Profile/Index"
                        asp-route-id="@post.UserId"
                        class="avatar"
-                       style="text-decoration:none;color:inherit;">
+                       style="text-decoration:none;color:inherit;padding:0;overflow:hidden;">
 
-                        @post.User.UserName.Substring(
-                            0,
-                            Math.Min(2, post.User.UserName.Length)
-                        ).ToUpper()
+                        @if (!string.IsNullOrWhiteSpace(post.User.ProfileImageUrl))
+                        {
+                            <img src="@post.User.ProfileImageUrl"
+                                 style="width:100%;height:100%;object-fit:cover;border-radius:50%;" alt="" />
+                        }
+                        else
+                        {
+                            @post.User.UserName.Substring(
+                                0,
+                                Math.Min(2, post.User.UserName.Length)
+                            ).ToUpper()
+                        }
 
                     </a>
 
