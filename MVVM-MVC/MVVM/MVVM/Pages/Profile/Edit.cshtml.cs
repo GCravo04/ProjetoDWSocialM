@@ -12,12 +12,15 @@ public class EditModel : PageModel
 {
     private readonly UserManager<AppUser> _userManager;
     private readonly SignInManager<AppUser> _signInManager;
+    private readonly IWebHostEnvironment _env;
 
     public EditModel(UserManager<AppUser> userManager,
-                     SignInManager<AppUser> signInManager)
+                     SignInManager<AppUser> signInManager,
+                     IWebHostEnvironment env)
     {
         _userManager = userManager;
         _signInManager = signInManager;
+        _env = env;
     }
 
     [BindProperty]
@@ -35,7 +38,10 @@ public class EditModel : PageModel
         [EmailAddress(ErrorMessage = "Email inválido.")]
         [Display(Name = "Email")]
         public string Email { get; set; } = string.Empty;
-        
+
+        [Display(Name = "Foto de perfil")]
+        public IFormFile? ProfileImage { get; set; }
+
         [Display(Name = "Password atual")]
         [DataType(DataType.Password)]
         public string? CurrentPassword { get; set; }
@@ -65,7 +71,7 @@ public class EditModel : PageModel
 
         return Page();
     }
-    
+
     public async Task<IActionResult> OnPostSaveAsync()
     {
         if (!string.IsNullOrWhiteSpace(Input.NewPassword) &&
@@ -103,6 +109,34 @@ public class EditModel : PageModel
                 user, Input.CurrentPassword, Input.NewPassword);
             if (!result.Succeeded)
                 errors.AddRange(result.Errors.Select(e => e.Description));
+        }
+
+        // Upload da foto de perfil
+        if (Input.ProfileImage != null && Input.ProfileImage.Length > 0)
+        {
+            var extensoesValidas = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
+            var extensao = Path.GetExtension(Input.ProfileImage.FileName).ToLower();
+
+            if (!extensoesValidas.Contains(extensao))
+            {
+                errors.Add("A imagem deve ser .jpg, .png, .gif ou .webp.");
+            }
+            else
+            {
+                var pastaUploads = Path.Combine(_env.WebRootPath, "uploads");
+                Directory.CreateDirectory(pastaUploads);
+
+                var nomeFicheiro = $"{user.Id}_{Guid.NewGuid():N}{extensao}";
+                var caminho = Path.Combine(pastaUploads, nomeFicheiro);
+
+                using (var stream = new FileStream(caminho, FileMode.Create))
+                {
+                    await Input.ProfileImage.CopyToAsync(stream);
+                }
+
+                user.ProfileImageUrl = $"/uploads/{nomeFicheiro}";
+                await _userManager.UpdateAsync(user);
+            }
         }
 
         if (errors.Any())

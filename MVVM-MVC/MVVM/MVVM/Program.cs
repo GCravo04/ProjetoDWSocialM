@@ -42,6 +42,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
+app.UseStaticFiles(); // serve as imagens carregadas em runtime (wwwroot/uploads)
 
 app.MapRazorPages()
     .WithStaticAssets();
