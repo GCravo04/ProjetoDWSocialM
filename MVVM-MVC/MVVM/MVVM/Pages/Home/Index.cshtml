@@ -35,14 +35,6 @@
                 </a>
             </li>
 
-            <li>
-                <a asp-page="/Details/Index"
-                   class="sidebar-link">
-                    <i class="bi bi-info-circle"></i>
-                    Sobre
-                </a>
-            </li>
-
             @if (User.Identity?.IsAuthenticated == true)
             {
                 <li>
@@ -54,13 +46,24 @@
                     </a>
                 </li>
             }
+
+            <li>
+                <a asp-page="/Details/Index"
+                   class="sidebar-link">
+                    <i class="bi bi-info-circle"></i>
+                    Sobre
+                </a>
+            </li>
+
             @if (User.IsInRole("Admin"))
             {
-                <a  asp-page="/BackOffice/Users"
-                    class="sidebar-link">
-                    <i class="bi bi-person"></i>
-                     Administração 
-                </a>
+                <li>
+                    <a asp-page="/BackOffice/Users"
+                       class="sidebar-link sidebar-admin">
+                        <i class="bi bi-shield-lock"></i>
+                        Administração
+                    </a>
+                </li>
             }
 
         </ul>

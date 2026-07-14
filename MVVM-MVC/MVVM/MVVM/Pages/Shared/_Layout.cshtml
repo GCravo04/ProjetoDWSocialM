@@ -2,7 +2,6 @@
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<AppUser> UserManager
 
-
 @{
     var currentUser = await UserManager.GetUserAsync(User);
 }
@@ -57,16 +56,17 @@
 
             </button>
 
-            <!-- Navbar content -->
+            <!-- Navbar -->
             <div class="collapse navbar-collapse"
                  id="navbarContent">
-                
-                <!-- Right menu -->
+
+                <!-- Empurra o conteúdo para a direita -->
+                <ul class="navbar-nav me-auto"></ul>
+
                 <div class="d-flex align-items-center gap-2">
 
                     @if (User.Identity?.IsAuthenticated ?? false)
                     {
-
                         <a asp-page="/Profile/Index"
                            asp-route-id="@currentUser?.Id"
                            class="btn btn-outline-dark">
