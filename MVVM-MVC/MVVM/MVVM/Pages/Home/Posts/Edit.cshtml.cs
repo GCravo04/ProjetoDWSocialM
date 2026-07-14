@@ -71,6 +71,6 @@ public class EditModel : PageModel
 
         await _context.SaveChangesAsync();
 
-        return RedirectToPage();
+        return RedirectToPage("/Home/Index");;
     }
 }

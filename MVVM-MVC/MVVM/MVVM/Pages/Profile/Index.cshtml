@@ -40,7 +40,7 @@
         }
     </div>
 
-    <h2 class="h6 text-muted mb-3">Publicações</h2>
+    <h2 class="posts-title">Publicações</h2>
 
     @if (!Model.Posts.Any())
     {
@@ -50,14 +50,28 @@
     {
         @foreach (var post in Model.Posts)
         {
-            <div class="post-card">
-                <div class="post-data">@post.CreatedAt.ToString("dd/MM/yyyy HH:mm")</div>
-                <div class="post-texto">@post.Content</div>
-                <div class="post-stats">
-                    <span>@post.CommentCount comentários</span>
-                    <span>@post.LikeCount gostos</span>
+            <a asp-page="/Home/Posts/Details"
+               asp-route-id="@post.PostId"
+               class="post-card-link">
+
+                <div class="post-card">
+
+                    <div class="post-data">
+                        @post.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+                    </div>
+
+                    <div class="post-texto">
+                        @post.Content
+                    </div>
+
+                    <div class="post-stats">
+                        <span>@post.CommentCount comentários</span>
+                        <span>@post.LikeCount gostos</span>
+                    </div>
+
                 </div>
-            </div>
+
+            </a>
         }
     }
 </div>

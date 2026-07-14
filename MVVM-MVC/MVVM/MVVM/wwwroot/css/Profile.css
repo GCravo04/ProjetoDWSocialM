@@ -1,42 +1,48 @@
 ﻿.perfil-wrap {
-    max-width: 600px;
-    margin: 0 auto;
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 0 10px;
 }
+
+/* ==========================
+   HEADER
+========================== */
 
 .perfil-header {
     display: flex;
     align-items: center;
-    gap: 18px;
-    padding: 24px;
+    gap: 20px;
+    padding: 28px;
     background: #fff;
     border: 1px solid #e9ecef;
     border-radius: 18px;
-    margin-bottom: 24px;
+    margin-bottom: 40px;
 }
 
 .perfil-avatar {
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
     background: #0d6efd;
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 28px;
-    font-weight: 600;
+    font-size: 32px;
+    font-weight: 700;
     flex-shrink: 0;
 }
 
 .perfil-nome {
-    font-size: 22px;
-    font-weight: 600;
+    font-size: 26px;
+    font-weight: 700;
     margin: 0;
 }
 
 .perfil-sub {
+    margin-top: 8px;
     color: #6c757d;
-    font-size: 14px;
+    font-size: 15px;
 }
 
 .perfil-sub strong {
@@ -48,16 +54,15 @@
 }
 
 .perfil-editar {
-    padding: 8px 18px;
+    padding: 9px 18px;
     border: 1px solid #0d6efd;
     color: #0d6efd;
     background: transparent;
     border-radius: 999px;
     text-decoration: none;
     font-size: 14px;
-    white-space: nowrap;
     cursor: pointer;
-    transition: background 0.15s, color 0.15s;
+    transition: .2s;
 }
 
 .perfil-editar:hover {
@@ -66,57 +71,93 @@
 }
 
 .perfil-seguir {
-    padding: 8px 22px;
-    border: 1px solid #0d6efd;
+    padding: 9px 22px;
+    border: none;
     background: #0d6efd;
-    color: #fff;
+    color: white;
     border-radius: 999px;
     font-size: 14px;
-    white-space: nowrap;
     cursor: pointer;
-    transition: background 0.15s;
+    transition: .2s;
 }
 
 .perfil-seguir:hover {
     background: #0b5ed7;
 }
 
+/* ==========================
+   POSTS
+========================== */
+
+.posts-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 24px;
+    padding-left: 4px;
+}
+
+.post-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    margin-bottom: 22px;
+}
+
+.post-card-link:hover {
+    color: inherit;
+}
+
 .post-card {
-    background: #fff;
+    background: white;
     border: 1px solid #e9ecef;
     border-radius: 16px;
-    padding: 18px 22px;
-    margin-bottom: 14px;
+    padding: 20px;
+    transition: .18s;
+    cursor: pointer;
+}
+
+.post-card:hover {
+    background: #f8f9fa;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(0,0,0,.05);
 }
 
 .post-data {
     color: #6c757d;
     font-size: 13px;
+    margin-bottom: 14px;
 }
 
 .post-texto {
-    font-size: 16px;
-    margin: 6px 0 14px;
+    font-size: 17px;
+    color: #212529;
+    line-height: 1.55;
+    margin-bottom: 22px;
+    word-break: break-word;
 }
 
 .post-stats {
     display: flex;
-    gap: 24px;
+    gap: 30px;
     color: #6c757d;
     font-size: 14px;
     border-top: 1px solid #f1f3f5;
-    padding-top: 12px;
+    padding-top: 14px;
 }
 
 .sem-posts {
     text-align: center;
     color: #6c757d;
-    padding: 30px;
+    padding: 40px;
     border: 1px dashed #dee2e6;
     border-radius: 16px;
+    background: #fff;
 }
 
-
+/* ==========================
+   EDIT PROFILE
+========================== */
 
 .edit-form {
     max-width: 520px;
@@ -132,7 +173,7 @@
 .edit-field {
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: .35rem;
     margin-bottom: 1.1rem;
 }
 
@@ -141,29 +182,29 @@
 }
 
 .edit-field label {
-    font-size: 0.85rem;
+    font-size: .85rem;
     font-weight: 600;
     color: #6b7280;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: .04em;
 }
 
 .edit-input {
     width: 100%;
     box-sizing: border-box;
-    padding: 0.55rem 0.8rem;
+    padding: .55rem .8rem;
     border: 1px solid #d1d5db;
     border-radius: 8px;
-    font-size: 0.95rem;
+    font-size: .95rem;
     background: #f9fafb;
     color: #111827;
-    transition: border-color 0.15s, box-shadow 0.15s;
+    transition: .15s;
 }
 
 .edit-input:focus {
     outline: none;
     border-color: #6366f1;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    box-shadow: 0 0 0 3px rgba(99,102,241,.15);
 }
 
 .edit-textarea {
@@ -172,18 +213,19 @@
 }
 
 .edit-erro {
-    font-size: 0.8rem;
+    font-size: .8rem;
     color: #ef4444;
 }
 
 .edit-acoes {
     display: flex;
-    gap: 0.75rem;
-    align-items: center;
+    gap: .75rem;
     flex-wrap: wrap;
 }
 
-
+/* ==========================
+   DANGER ZONE
+========================== */
 
 .danger-zone {
     border: 1px solid #fecaca;
@@ -195,77 +237,72 @@
 
 .btn-danger-outline {
     display: inline-block;
-    margin-top: 0.5rem;
-    padding: 0.45rem 1.1rem;
+    margin-top: .5rem;
+    padding: .45rem 1.1rem;
     border: 1.5px solid #ef4444;
     border-radius: 8px;
     background: transparent;
     color: #ef4444;
     font-weight: 600;
-    font-size: 0.9rem;
     text-decoration: none;
-    cursor: pointer;
-    transition: background 0.15s, color 0.15s;
+    transition: .2s;
 }
 
 .btn-danger-outline:hover {
     background: #ef4444;
-    color: #fff;
-}
-
-
-
-.modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.45);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
-
-.modal-box {
-    background: #fff;
-    border-radius: 16px;
-    padding: 2rem;
-    width: 100%;
-    max-width: 440px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-}
-
-.modal-titulo {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: #111827;
-    margin-bottom: 0.5rem;
-}
-
-.modal-desc {
-    font-size: 0.9rem;
-    color: #6b7280;
-    margin-bottom: 1.25rem;
-}
-
-.modal-acoes {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    margin-top: 1rem;
+    color: white;
 }
 
 .btn-danger-solid {
-    padding: 0.5rem 1.2rem;
+    padding: .5rem 1.2rem;
     background: #ef4444;
-    color: #fff;
+    color: white;
     border: none;
     border-radius: 8px;
     font-weight: 600;
-    font-size: 0.9rem;
     cursor: pointer;
-    transition: background 0.15s;
 }
 
 .btn-danger-solid:hover {
     background: #dc2626;
+}
+
+/* ==========================
+   MODAL
+========================== */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-box {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.2);
+}
+
+.modal-titulo {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: .5rem;
+}
+
+.modal-desc {
+    color: #6b7280;
+    margin-bottom: 1.4rem;
+}
+
+.modal-acoes {
+    display: flex;
+    gap: .75rem;
+    flex-wrap: wrap;
 }

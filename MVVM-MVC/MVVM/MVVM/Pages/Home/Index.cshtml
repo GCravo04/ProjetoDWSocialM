@@ -13,9 +13,19 @@
 
     <aside class="sidebar">
 
-        <div class="logo">nexo</div>
+        <div class="logo">
+            nexo
+        </div>
 
         <ul class="menu">
+
+            <li>
+                <a asp-page="/Home/Index"
+                   class="sidebar-link">
+                    <i class="bi bi-house-door"></i>
+                    Home
+                </a>
+            </li>
 
             <li>
                 <a asp-page="/Home/Explore/Index"
@@ -24,23 +34,55 @@
                     Explorar
                 </a>
             </li>
+
+            <li>
+                <a asp-page="/Details/Index"
+                   class="sidebar-link">
+                    <i class="bi bi-info-circle"></i>
+                    Sobre
+                </a>
+            </li>
+
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <li>
+                    <a asp-page="/Profile/Index"
+                       asp-route-id="@Model.CurrentUser?.Id"
+                       class="sidebar-link">
+                        <i class="bi bi-person"></i>
+                        Perfil
+                    </a>
+                </li>
+            }
+            @if (User.IsInRole("Admin"))
+            {
+                <a  asp-page="/BackOffice/Users"
+                    class="sidebar-link">
+                    <i class="bi bi-person"></i>
+                     Administração 
+                </a>
+            }
+
         </ul>
 
-        <div class="profile-box">
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <div class="profile-box">
 
-            <div class="avatar">
-                @Model.CurrentUser?.UserName?.Substring(
-                    0,
-                    Math.Min(2, Model.CurrentUser.UserName.Length)
-                ).ToUpper()
+                <div class="avatar">
+                    @Model.CurrentUser?.UserName?.Substring(
+                        0,
+                        Math.Min(2, Model.CurrentUser.UserName.Length)
+                    ).ToUpper()
+                </div>
+
+                <div>
+                    <strong>@Model.CurrentUser?.UserName</strong><br />
+                    <small>@("@"+Model.CurrentUser?.UserName)</small>
+                </div>
+
             </div>
-
-            <div>
-                <strong>@Model.CurrentUser?.UserName</strong><br/>
-                <small>@("@" + Model.CurrentUser?.UserName)</small>
-            </div>
-
-        </div>
+        }
 
     </aside>
 
@@ -209,15 +251,19 @@
                                name="PostId"
                                value="@post.PostId"/>
 
-                        <input type="text"
-                               name="CommentContent"
-                               class="form-control mt-2"
-                               placeholder="Escreve um comentário..."/>
+                        <div class="d-flex gap-2 mt-2">
 
-                        <button type="submit"
-                                class="btn btn-dark mt-2">
-                            Comentar
-                        </button>
+                            <input type="text"
+                                   name="CommentContent"
+                                   class="form-control"
+                                   placeholder="Escreve um comentário..." />
+
+                            <button type="submit"
+                                    class="btn btn-dark">
+                                Comentar
+                            </button>
+
+                        </div>
 
                     </form>
                 }

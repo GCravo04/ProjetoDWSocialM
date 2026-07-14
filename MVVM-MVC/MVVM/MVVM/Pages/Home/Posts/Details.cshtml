@@ -34,6 +34,24 @@
                     <i class="bi bi-chat"></i> @Model.Post.Comments.Count comentários
                 </div>
 
+                @if (User.Identity?.IsAuthenticated == true &&
+                     (Model.Post.UserId == Model.CurrentUser?.Id || User.IsInRole("Admin")))
+                {
+                    <div class="d-flex gap-2 mb-3">
+
+                        <a asp-page="/Home/Posts/Edit"
+                           class="btn btn-sm btn-outline-primary">
+                            Editar publicação
+                        </a>
+
+                        <a asp-page="/Home/Posts/Delete"
+                           class="btn btn-sm btn-outline-danger">
+                            Eliminar publicação
+                        </a>
+
+                    </div>
+                }
+
                 @if (Model.Post.Comments.Any())
                 {
                     <div class="mt-3">
