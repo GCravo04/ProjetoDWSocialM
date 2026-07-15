@@ -72,38 +72,30 @@
         {
             <div class="profile-box">
 
-                <div class="avatar">
-                    @Model.CurrentUser?.UserName?.Substring(
-                        0,
-                        Math.Min(2, Model.CurrentUser.UserName.Length)
-                    ).ToUpper()
-                </div>
+                @if (!string.IsNullOrWhiteSpace(Model.CurrentUser?.ProfileImageUrl))
+                {
+                    <img src="@Model.CurrentUser.ProfileImageUrl"
+                         class="avatar"
+                         style="object-fit:cover;"
+                         alt="Foto de perfil" />
+                }
+                else
+                {
+                    <div class="avatar">
+                        @Model.CurrentUser?.UserName?.Substring(
+                            0,
+                            Math.Min(2, Model.CurrentUser.UserName.Length)
+                        ).ToUpper()
+                    </div>
+                }
 
                 <div>
                     <strong>@Model.CurrentUser?.UserName</strong><br />
                     <small>@("@"+Model.CurrentUser?.UserName)</small>
                 </div>
 
-            @if (!string.IsNullOrWhiteSpace(Model.CurrentUser?.ProfileImageUrl))
-            {
-                <img src="@Model.CurrentUser.ProfileImageUrl" class="avatar" style="object-fit:cover;" alt="Foto de perfil" />
-            }
-            else
-            {
-                <div class="avatar">
-                    @Model.CurrentUser?.UserName?.Substring(
-                        0,
-                        Math.Min(2, Model.CurrentUser.UserName.Length)
-                    ).ToUpper()
-                </div>
-            }
-
-            <div>
-                <strong>@Model.CurrentUser?.UserName</strong><br/>
-                <small>@("@" + Model.CurrentUser?.UserName)</small>
             </div>
-
-        </div>
+        }
 
     </aside>
 
