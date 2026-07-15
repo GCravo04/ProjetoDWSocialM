@@ -10,7 +10,14 @@
 <div class="perfil-wrap">
 
     <div class="perfil-header">
-        <div class="perfil-avatar">@iniciais</div>
+        @if (!string.IsNullOrWhiteSpace(Model.ProfileImageUrl))
+        {
+            <img src="@Model.ProfileImageUrl" class="perfil-avatar" style="object-fit: cover;" alt="Foto de @nome" />
+        }
+        else
+        {
+            <div class="perfil-avatar">@iniciais</div>
+        }
         <div>
             <h1 class="perfil-nome">@nome</h1>
             <div class="perfil-sub">

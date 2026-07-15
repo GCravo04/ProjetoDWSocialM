@@ -12,7 +12,14 @@
 <div class="perfil-wrap">
 
     <div class="perfil-header">
-        <div class="perfil-avatar">@iniciais</div>
+        @if (!string.IsNullOrWhiteSpace(Model.ProfileImageUrl))
+        {
+            <img src="@Model.ProfileImageUrl" class="perfil-avatar" style="object-fit: cover;" alt="Foto de @nome" />
+        }
+        else
+        {
+            <div class="perfil-avatar">@iniciais</div>
+        }
         <div>
             <h1 class="perfil-nome">@nome</h1>
             <p class="text-muted mb-0" style="font-size:.9rem;">A editar o teu perfil</p>
@@ -36,8 +43,8 @@
         <div class="alert alert-success mt-3">@TempData["SuccessMessage"]</div>
     }
 
-    
-    <form method="post" asp-page-handler="Save" class="edit-form mt-4">
+
+    <form method="post" asp-page-handler="Save" enctype="multipart/form-data" class="edit-form mt-4">
 
         <div class="edit-section">
             <h2 class="h6 text-muted mb-3">Informações da conta</h2>
@@ -53,7 +60,13 @@
                 <input asp-for="Input.Email" class="edit-input" autocomplete="email" />
                 <span asp-validation-for="Input.Email" class="edit-erro"></span>
             </div>
-            
+
+            <div class="edit-field">
+                <label asp-for="Input.ProfileImage">Foto de perfil</label>
+                <input asp-for="Input.ProfileImage" type="file" accept="image/*" class="edit-input" />
+                <span asp-validation-for="Input.ProfileImage" class="edit-erro"></span>
+            </div>
+
         </div>
 
         <div class="edit-section mt-4">
@@ -88,7 +101,7 @@
         </div>
     </form>
 
-    
+
     <div class="danger-zone mt-5">
         <h2 class="h6 text-danger mb-1">Eliminar conta</h2>
         <p class="text-muted" style="font-size:.85rem;">

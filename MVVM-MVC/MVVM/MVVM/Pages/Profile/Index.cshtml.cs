@@ -19,6 +19,7 @@ public class IndexModel : PageModel
 
     public string ProfileUserId { get; set; } = string.Empty;
     public string UserName { get; set; } = string.Empty;
+    public string? ProfileImageUrl { get; set; }
     public int PostCount { get; set; }
     public int FollowersCount { get; set; }
     public int FollowingCount { get; set; }
@@ -40,6 +41,7 @@ public class IndexModel : PageModel
 
         ProfileUserId = user.Id;
         UserName = user.UserName ?? "Utilizador";
+        ProfileImageUrl = user.ProfileImageUrl;
 
         var meId = _userManager.GetUserId(User);
         IsOwnProfile = meId == user.Id;
