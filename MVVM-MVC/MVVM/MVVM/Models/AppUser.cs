@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations.Schema;
 using MVC.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class AppUser : IdentityUser
 {

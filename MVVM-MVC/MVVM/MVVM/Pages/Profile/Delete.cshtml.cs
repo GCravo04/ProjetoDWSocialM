@@ -22,26 +22,26 @@ public class DeleteModel : PageModel
         _signInManager = signInManager;
     }
 
-  
+
     public IActionResult OnGet()
     {
         return Page();
     }
 
-  
+
     public async Task<IActionResult> OnPostAsync(string deletePassword)
     {
         var user = await _userManager.GetUserAsync(User);
         if (user is null) return NotFound();
 
-   
+
         var passwordOk = await _userManager.CheckPasswordAsync(user, deletePassword);
         if (!passwordOk)
         {
             TempData["DeleteError"] = "Password incorreta. A conta não foi eliminada.";
             return RedirectToPage();
         }
-        
+
         var comments = _context.Comments
             .Where(c => c.UserId == user.Id);
 
@@ -59,7 +59,7 @@ public class DeleteModel : PageModel
 
         await _context.SaveChangesAsync();
 
-       
+
         await _signInManager.SignOutAsync();
 
         var result = await _userManager.DeleteAsync(user);
@@ -68,7 +68,7 @@ public class DeleteModel : PageModel
             TempData["DeleteError"] = "Ocorreu um erro ao eliminar a conta. Tenta novamente.";
             return RedirectToPage();
         }
-        
+
         return RedirectToPage("/Index");
     }
 }

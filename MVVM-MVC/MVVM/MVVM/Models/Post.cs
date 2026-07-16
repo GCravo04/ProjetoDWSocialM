@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using MVC.Models;
 
 namespace MVC.Models;
+
 public class Post
 {
     [Key]

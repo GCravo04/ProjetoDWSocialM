@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
-using MVC.Models;
 
 namespace MVVM.Pages.Profile;
 
@@ -68,7 +67,7 @@ public class EditModel : PageModel
         Input = new InputModel
         {
             UserName = user.UserName ?? string.Empty,
-            Email    = user.Email    ?? string.Empty,
+            Email = user.Email ?? string.Empty,
         };
 
         ProfileImageUrl = user.ProfileImageUrl;
