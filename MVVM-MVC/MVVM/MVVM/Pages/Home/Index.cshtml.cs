@@ -30,12 +30,15 @@ public class IndexModel : PageModel
         CurrentFeed = feed;
         CurrentUser = await _userManager.GetUserAsync(User);
 
+        // Include do autor, likes e comentários: o feed mostra isto,
+        // por isso vem numa única ida à BD em vez de multiplas queries
         IQueryable<Post> query = _context.Posts
             .Include(p => p.User)
             .Include(p => p.Likes)
             .Include(p => p.Comments)
             .ThenInclude(c => c.User);
 
+        // Separador "A Seguir": filtra o feed pelos ids de quem o utilizador segue
         if (feed == "following" && CurrentUser != null)
         {
             var followingIds = await _context.Follows

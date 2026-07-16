@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace MVVM.Pages;
 
+// Página de erro comum a toda a aplicação
+// o código HTTP chega pelo URL (/Error/404) através do UseStatusCodePagesWithReExecute
+// configurado no program.cs, e é o que decide o texto mostrado ao utilizador.
 public class ErrorModel : PageModel
 {
     public int StatusCode { get; set; }
@@ -11,6 +14,7 @@ public class ErrorModel : PageModel
 
     public void OnGet(int? code)
     {
+        // Sem código no URL assume-se erro genérico do servidor.
         StatusCode = code ?? 500;
 
         switch (StatusCode)

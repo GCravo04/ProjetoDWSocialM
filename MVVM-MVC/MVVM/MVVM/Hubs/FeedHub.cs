@@ -6,6 +6,9 @@ using MVC.Models;
 
 namespace MVVM.Hubs;
 
+// Hub de SignalR do feed.
+// Os likes passam por aqui em vez de um POST normal, para que a contagem
+// apareça atualizada em todos os browsers abertos sem ninguém dar refresh.
 [Authorize]
 public class FeedHub : Hub
 {
@@ -20,6 +23,7 @@ public class FeedHub : Hub
         _userManager = userManager;
     }
 
+    // Toggle: se o utilizador já tinha dado like ao post remove-o, caso contrário cria.
     public async Task ToggleLike(int postId)
     {
         var user = await _userManager.GetUserAsync(Context.User);
@@ -56,6 +60,8 @@ public class FeedHub : Hub
         var totalLikes = await _context.Likes
             .CountAsync(l => l.PostId == postId);
 
+        // Avisa todos os clientes ligados.
+        // o userID vem incluído porque só o browser de quem carregou é que deve trocar o estado do coração
         await Clients.All.SendAsync(
             "LikeUpdated",
             postId,

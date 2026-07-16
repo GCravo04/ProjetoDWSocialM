@@ -29,6 +29,8 @@ public class IndexModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(string? id)
     {
+        // Sem id no URL mostra o perfil de quem está autenticado (/Profile)
+        // Com id mostra o perfil desse utilizador (/Profile?id=...)
         if (string.IsNullOrEmpty(id))
         {
             id = _userManager.GetUserId(User);
@@ -46,6 +48,8 @@ public class IndexModel : PageModel
         var meId = _userManager.GetUserId(User);
         IsOwnProfile = meId == user.Id;
 
+        // Seguidores = quem segue este perfil; A seguir = quem este perfil segue.
+        // A mesma tabela Follow serve os dois sentidos, muda só a coluna do filtro.
         FollowersCount = await _context.Follows.CountAsync(f => f.FollowedUserId == id);
         FollowingCount = await _context.Follows.CountAsync(f => f.FollowerUserId == id);
         IsFollowing = meId != null &&
@@ -68,6 +72,7 @@ public class IndexModel : PageModel
         return Page();
     }
 
+    // Botão seguir. O jaSegue evita duplicados se houver duplo clique ou refresh do POST.
     public async Task<IActionResult> OnPostFollowAsync(string id)
     {
         var me = _userManager.GetUserId(User);

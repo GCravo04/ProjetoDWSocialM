@@ -34,7 +34,7 @@ public class DeleteModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user is null) return NotFound();
 
-   
+        // Pede a password outra vez antes de avançar: a eliminação é irreversível
         var passwordOk = await _userManager.CheckPasswordAsync(user, deletePassword);
         if (!passwordOk)
         {
@@ -42,6 +42,9 @@ public class DeleteModel : PageModel
             return RedirectToPage();
         }
         
+        // Comentários e likes estão como Restrict no DbContext, por isso
+        // não são apagados em cascata com o utilizador. 
+        // Têm de sair primeiro, senão o DeleteAsync falha por violação de chave estrangeira
         var comments = _context.Comments
             .Where(c => c.UserId == user.Id);
 
@@ -59,7 +62,8 @@ public class DeleteModel : PageModel
 
         await _context.SaveChangesAsync();
 
-       
+        // Termina a sessão antes de apagar a conta, para não fica um cookie
+        // a apontar para um utilizador que já não existe       
         await _signInManager.SignOutAsync();
 
         var result = await _userManager.DeleteAsync(user);

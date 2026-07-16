@@ -7,6 +7,8 @@ using MVC.Models.DTOs;
 
 namespace MVC.Controllers;
 
+// API dos comentários. Tal como nos posts, recebe DTOs e não a entidade Comment,
+// para o cliente não conseguir escolher o autor nem a data.
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
@@ -71,7 +73,7 @@ public class CommentController : ControllerBase
 
         var comment = new Comment
         {
-            UserId = user.Id,          // nunca confiar no DTO
+            UserId = user.Id,
             PostId = dto.PostId,
             Content = dto.Content,
             CreatedAt = DateTime.UtcNow
