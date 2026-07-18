@@ -19,7 +19,7 @@ public class DetailsModel : PageModel
         _userManager = userManager;
     }
 
-   
+
     public Post Post { get; set; } = null!;
     public AppUser? CurrentUser { get; set; }
 
@@ -28,7 +28,8 @@ public class DetailsModel : PageModel
         CurrentUser = await _userManager.GetUserAsync(User);
         if (id == null)
         {
-            return NotFound(); }
+            return NotFound();
+        }
 
         var post = await _context.Posts
             .Include(p => p.User)

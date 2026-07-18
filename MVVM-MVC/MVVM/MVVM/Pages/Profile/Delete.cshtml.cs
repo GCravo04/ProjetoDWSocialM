@@ -22,13 +22,13 @@ public class DeleteModel : PageModel
         _signInManager = signInManager;
     }
 
-  
+
     public IActionResult OnGet()
     {
         return Page();
     }
 
-  
+
     public async Task<IActionResult> OnPostAsync(string deletePassword)
     {
         var user = await _userManager.GetUserAsync(User);
@@ -72,7 +72,7 @@ public class DeleteModel : PageModel
             TempData["DeleteError"] = "Ocorreu um erro ao eliminar a conta. Tenta novamente.";
             return RedirectToPage();
         }
-        
+
         return RedirectToPage("/Index");
     }
 }

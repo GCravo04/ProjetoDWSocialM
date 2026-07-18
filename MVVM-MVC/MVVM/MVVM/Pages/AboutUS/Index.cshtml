@@ -1,0 +1,153 @@
+﻿@page
+@model MVC.Pages.Details.IndexModel
+
+@{
+    ViewData["Title"] = "Sobre o Projeto";
+}
+
+<link rel="stylesheet" href="~/css/profile.css" />
+
+<div class="perfil-wrap">
+
+    <div class="perfil-header">
+
+        <div>
+            <h1 class="perfil-nome">Sobre o Projeto</h1>
+
+            <div class="perfil-sub">
+                Informações sobre o desenvolvimento da aplicação.
+            </div>
+        </div>
+
+    </div>
+
+    <div class="post-card">
+
+        <h4>Curso</h4>
+
+        <p>
+            <strong>Curso:</strong> Licenciatura em Engenharia Informática
+        </p>
+
+        <p>
+            <strong>Unidade Curricular:</strong> Desenvolvimento Web
+        </p>
+
+        <p>
+            <strong>Ano Letivo:</strong> 2025/2026
+        </p>
+
+    </div>
+
+    <div class="post-card">
+
+        <h4>Autores</h4>
+
+        <h2>Gabriel Cravo Nº24842</h2>
+        <h2>Diogo Costa Nª25307</h2>
+
+    </div>
+
+    <div class="post-card">
+
+        <h4>Tecnologias Utilizadas</h4>
+
+        <ul>
+            <li>ASP.NET Core 10 (Razor Pages + MVC)</li>
+            <li>Entity Framework Core</li>
+            <li>ASP.NET Core Identity</li>
+            <li>SignalR (atualização em tempo real dos gostos)</li>
+            <li>Bootstrap 5</li>
+            <li>Bootstrap Icons</li>
+            <li>SQL Server</li>
+            <li>Swagger / OpenAPI (documentação da API)</li>
+        </ul>
+
+    </div>
+
+    <div class="post-card">
+
+        <h4>Bibliotecas, Frameworks e Código de Terceiros</h4>
+
+        <table class="table table-bordered align-middle">
+
+            <thead>
+
+                <tr>
+                    <th>Recurso</th>
+                    <th>Utilização</th>
+                    <th>Origem</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>ASP.NET Core</td>
+                    <td>Framework principal da aplicação Web</td>
+                    <td>Microsoft</td>
+                </tr>
+
+                <tr>
+                    <td>Entity Framework Core</td>
+                    <td>Persistência e acesso à base de dados</td>
+                    <td>Microsoft</td>
+                </tr>
+
+                <tr>
+                    <td>ASP.NET Identity</td>
+                    <td>Autenticação e gestão de utilizadores</td>
+                    <td>Microsoft</td>
+                </tr>
+
+                <tr>
+                    <td>SignalR</td>
+                    <td>Atualização em tempo real dos gostos</td>
+                    <td>Microsoft</td>
+                </tr>
+
+                <tr>
+                    <td>Bootstrap 5</td>
+                    <td>Interface gráfica e componentes</td>
+                    <td>https://getbootstrap.com</td>
+                </tr>
+
+                <tr>
+                    <td>Bootstrap Icons</td>
+                    <td>Ícones utilizados na interface</td>
+                    <td>https://icons.getbootstrap.com</td>
+                </tr>
+            
+
+                <tr>
+                    <td>ChatGPT (OpenAI) e ClaudeAI</td>
+                    <td>
+                        Apoio na implementação de algumas funcionalidades,
+                        esclarecimento de dúvidas, geração e refatoração de
+                        pequenos excertos de código.
+                    </td>
+                    <td>OpenAI</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="post-card">
+
+        <h4>Observações</h4>
+
+        <p>
+            Durante o desenvolvimento foram seguidas as boas práticas de
+            programação, incluindo a separação entre MVC, Razor Pages e API,
+            utilização de DTOs, autenticação baseada em Identity,
+            comunicação em tempo real com SignalR e controlo de permissões
+            por utilizador e administrador.
+        </p>
+
+    </div>
+
+</div>

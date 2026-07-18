@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace MVVM.Pages;
+namespace MVC.Pages.Details;
 
-public class PrivacyModel : PageModel
+public class IndexModel : PageModel
 {
     public void OnGet()
     {

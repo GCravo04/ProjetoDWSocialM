@@ -68,6 +68,6 @@ public class DeleteModel : PageModel
 
         await _context.SaveChangesAsync();
 
-        return RedirectToPage("/Home/Index");;
+        return RedirectToPage("/Home/Index"); ;
     }
 }
