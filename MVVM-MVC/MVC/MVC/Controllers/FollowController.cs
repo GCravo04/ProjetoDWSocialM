@@ -7,6 +7,8 @@ using MVC.Models.DTOs;
 
 namespace MVC.Controllers;
 
+// API das relações de seguir. Segue a mesma ideia do LikeController:
+// um Toggle que cria ou remove, conforme o estado atual.
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
@@ -37,6 +39,7 @@ public class FollowController : ControllerBase
         if (user == null)
             return Unauthorized();
 
+        // Quem segue é sempre o utilizador autenticado; do DTO só vem quem é seguido
         var follow = await _context.Follows.FirstOrDefaultAsync(f =>
             f.FollowerUserId == user.Id &&
             f.FollowedUserId == dto.FollowedUserId);

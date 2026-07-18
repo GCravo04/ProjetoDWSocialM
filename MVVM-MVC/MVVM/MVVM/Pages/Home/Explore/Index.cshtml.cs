@@ -29,6 +29,7 @@ public class IndexModel : PageModel
                 u.UserName.Contains(Search));
         }
 
+        // Limitado a 50 para uma pesquisa vazia não arrastar a tabela toda
         Users = await query
             .OrderBy(u => u.UserName)
             .Take(50)

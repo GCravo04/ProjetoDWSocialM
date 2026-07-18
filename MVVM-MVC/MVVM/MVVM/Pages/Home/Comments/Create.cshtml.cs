@@ -33,9 +33,11 @@ public class CreateModel : PageModel
         if (user == null)
             return Challenge();
 
+        // Comentário vazio: volta ao feed sem gravar nada
         if (string.IsNullOrWhiteSpace(CommentContent))
             return RedirectToPage("/Home/Index");
 
+        // Autor e data são definidos aqui e não no formulário
         var comment = new Comment
         {
             Content = CommentContent,

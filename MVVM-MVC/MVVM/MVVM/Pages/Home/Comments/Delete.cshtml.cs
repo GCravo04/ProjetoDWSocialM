@@ -37,7 +37,8 @@ public class DeleteModel : PageModel
 
         if (comment == null)
             return NotFound();
-
+        
+        // Só o autor do comentário ou um admin o podem apagar
         if (comment.UserId != user.Id && !User.IsInRole("Admin"))
         {
             return Forbid();

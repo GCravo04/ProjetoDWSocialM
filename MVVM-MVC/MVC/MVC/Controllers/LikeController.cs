@@ -7,6 +7,9 @@ using MVC.Models.DTOs;
 
 namespace MVC.Controllers;
 
+// API dos gostos. Não há endpoints separados para dar e retirar like:
+// como a chave é composta (UserId + PostId), um só Toggle resolve os dois casos
+// e evita duplicados.
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
@@ -29,6 +32,8 @@ public class LikeController : ControllerBase
         return await _context.Likes.ToListAsync();
     }
 
+    // O utilizador vem do token/sessão e não do DTO: caso contrário era possível
+    // dar likes em nome de outra pessoa.
     [HttpPost("Toggle")]
     public async Task<IActionResult> ToggleLike(LikeDTO dto)
     {

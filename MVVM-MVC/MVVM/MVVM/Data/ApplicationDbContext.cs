@@ -21,7 +21,8 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     {
         base.OnModelCreating(builder);
 
-        // Like composto por User + Post
+        // Chave composta: um utilizador só pode dar um like por publicação.
+        // impede likes duplicados sem precisar de validação extra.
         builder.Entity<Like>()
             .HasKey(l => new { l.UserId, l.PostId });
 

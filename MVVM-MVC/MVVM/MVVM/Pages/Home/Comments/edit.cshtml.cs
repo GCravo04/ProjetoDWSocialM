@@ -28,6 +28,7 @@ public class EditModel : PageModel
 
     public int PostId { get; set; }
 
+    // Carrega o comentário para o formulário, se o utilizador o puder editar
     public async Task<IActionResult> OnGetAsync(int id)
     {
         var comment = await _context.Comments
@@ -38,6 +39,7 @@ public class EditModel : PageModel
 
         var user = await _userManager.GetUserAsync(User);
 
+        // Só o autor ou um admin podem editar
         if (comment.UserId != user!.Id && !User.IsInRole("Admin"))
             return Forbid();
 

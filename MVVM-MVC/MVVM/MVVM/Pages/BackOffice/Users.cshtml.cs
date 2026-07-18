@@ -6,7 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MVVM.Pages.BackOffice;
 
-[Authorize(Roles = "Admin")]   // <- só administradores acedem
+// Backoffice de gestão de utilizadores.
+// Restrito a administradores: um utilizador normal recebe um 403 e vai para página de erro
+[Authorize(Roles = "Admin")]
 public class UsersModel : PageModel
 {
     private readonly UserManager<AppUser> _userManager;
@@ -21,6 +23,8 @@ public class UsersModel : PageModel
     [BindProperty(SupportsGet = true)]
     public string Search { get; set; } = string.Empty;
 
+    // Linha da tabela. Não usamos o AppUSer diretamente porque é preciso
+    // juntar-lhe o role, que vive noutra tabela.
     public class UserRow
     {
         public string Id { get; set; } = string.Empty;
@@ -37,6 +41,7 @@ public class UsersModel : PageModel
 
         var users = await query.OrderBy(u => u.UserName).Take(100).ToListAsync();
 
+
         Users = new List<UserRow>();
         foreach (var u in users)
         {
@@ -49,6 +54,7 @@ public class UsersModel : PageModel
         }
     }
 
+    // Promove a admin ou despromove, conforme o estado atual do utilizador
     public async Task<IActionResult> OnPostToggleAdminAsync(string id)
     {
         var user = await _userManager.FindByIdAsync(id);

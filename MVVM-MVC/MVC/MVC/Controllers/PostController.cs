@@ -7,6 +7,8 @@ using MVC.Models.DTOs;
 
 namespace MVC.Controllers;
 
+// API das publicações. Os métodos de escrita recebem DTOs em vez da entidade Post:
+// o cliente só envia o conteúdo, e o autor e as datas são definidos no servidor.
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
@@ -100,6 +102,7 @@ public class PostController : ControllerBase
         if (user == null)
             return Unauthorized();
 
+        // Só o autor ou um administrador podem apagar a publicação
         if (post.UserId != user.Id && !User.IsInRole("Admin"))
             return Forbid();
 

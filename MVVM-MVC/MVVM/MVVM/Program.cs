@@ -16,6 +16,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddSignalR();
 
 // Identity
+// RequireConfirmedAccount a false: não há servidor de email configurador, por isso
+// a conta tem de ficar utilizável logo a seguir ao registo.
 builder.Services.AddDefaultIdentity<AppUser>(options => { options.SignIn.RequireConfirmedAccount = false; })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -31,7 +33,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-// Redireciona erros de status
+// Redireciona erros de status (404,403, ...) para a página /Error.
+// Fica fora do if acima intencionalmente, para as páginas de erro funcionarem
+// também em desenvolvimento e não só depois de publicado.
 app.UseStatusCodePagesWithReExecute("/Error/{0}");
 
 app.UseHttpsRedirection();
@@ -49,6 +53,8 @@ app.MapRazorPages()
 
 app.MapHub<FeedHub>("/feedHub");
 // Seed de roles e utilizador admin
+// Corre em cada arranque porque é preciso garantir que existe sempre um admin:
+// numa base de dados vazia não haveria ninguém com permissões para criar o primeiro.
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
